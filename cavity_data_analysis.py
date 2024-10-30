@@ -6,7 +6,7 @@ import os
 
 '''define filename'''
 file_name = 'scope_17'
-folder_name = 'data'
+folder_name = 'data3'
 file_path = folder_name + '/' + file_name + '.csv'
 os.makedirs("figures", exist_ok=True)
 
