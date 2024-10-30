@@ -1,0 +1,13 @@
+data 1 directory 25.10.24
+  scope_0 : almost aligned cavity
+  scope_1 : Maximized the first peak of the first group
+  scope_2 : maximized the first peak of the second group
+  scope_4: heated the cavity so that a full free spectral range was visible
+
+data 2 directory 29.10.24
+  10 data collections without realigning anything at first
+  scope_0 - scope_9
+
+data 3 directory 
+  10 data collections after having slightly realigned 
+  scope_10-scope_19
