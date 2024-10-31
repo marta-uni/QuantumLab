@@ -5,23 +5,24 @@ import numpy as np
 import os
 
 '''define filename'''
-file_name = 'scope_17'
-folder_name = 'data3'
+file_name = 'scope_2'
+folder_name = 'data1'
 file_path = folder_name + '/' + file_name + '.csv'
 os.makedirs("figures", exist_ok=True)
 
 '''prepare data (read, crop, fit piezo)'''
 
 # Read the CSV file, skip the first 2 rows, and specify the data types
-data = pd.read_csv(file_path, skiprows=2, names=['timestamp', 'volt_laser', 'volt_piezo'], dtype={'timestamp': float, 'volt_laser': float, 'volt_piezo': float})
+data = pd.read_csv(file_path, skiprows=2, names=['timestamp', 'volt_laser', 'volt_piezo'],
+                   dtype={'timestamp': float, 'volt_laser': float, 'volt_piezo': float})
 
 #remove any rows with NaN values
 data_cleaned = data.dropna()
 
 # Extract the columns
-timestamps = data['timestamp'].to_numpy()  # Convert to NumPy array
-volt_laser = data['volt_laser'].to_numpy()  # Convert to NumPy array
-volt_piezo = data['volt_piezo'].to_numpy()  # Convert to NumPy array
+timestamps = data_cleaned['timestamp'].to_numpy()  # Convert to NumPy array
+volt_laser = data_cleaned['volt_laser'].to_numpy()  # Convert to NumPy array
+volt_piezo = data_cleaned['volt_piezo'].to_numpy()  # Convert to NumPy array
 
 # crop data to one piezo cycle
 result = fn.crop_to_min_max(timestamps, volt_laser, volt_piezo)
@@ -32,7 +33,7 @@ volt_laser = result[1]
 volt_piezo = result[2]
 
 #fit the piezo data
-time, piezo_fitted = fn.fit_piezo_line(timestamps, volt_piezo)
+piezo_fitted = fn.fit_piezo_line(timestamps, volt_piezo)
 
 # Plot volt_piezo vs. timestamp  
 figure_name = 'data2/figures/' + file_name + "_time.pdf"

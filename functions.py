@@ -33,7 +33,7 @@ def fit_piezo_line(time, piezo_voltage):
     slope, intercept = np.polyfit(time, piezo_voltage, 1)
     piezo_fit = slope * time + intercept
 
-    return time, piezo_fit
+    return piezo_fit
 
 def peaks(piezo_voltage, laser_voltage):
     peaks_indices, _ = find_peaks(laser_voltage, height= 0.3, distance=10)
