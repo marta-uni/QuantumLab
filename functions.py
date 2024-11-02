@@ -1,18 +1,20 @@
 import numpy as np
-from pandas.core.common import is_full_slice
-from scipy.signal import find_peaks
+from scipy.signal import find_peaks, peak_widths
 import matplotlib.pyplot as plt
 
 def crop_to_min_max(time, laser_voltage, piezo_voltage):
+    '''Crops time and voltage readings in order to include just one
+     frequency sweep from the piezo.'''
 
     if len(piezo_voltage) == 0:
         return None  # Return None if piezo_voltage is empty
 
     # Find indices of minimum and maximum values
+    # Assuming there will be just one full sweep in the dataset
     min_index = np.argmin(piezo_voltage)
     max_index = np.argmax(piezo_voltage)
 
-    # Ensure min_index is before max_index
+    # Ensure the possibility to analyse "backwards" sweeps too
     start_index = min(min_index, max_index)
     end_index = max(min_index, max_index)
 
@@ -25,6 +27,9 @@ def crop_to_min_max(time, laser_voltage, piezo_voltage):
 
 
 def fit_piezo_line(time, piezo_voltage):
+    '''Converts timestamps in voltages on piezo.
+    
+    Returns voltages from a linear interpolation of input data.'''
 
     if len(time) == 0 or len(piezo_voltage) == 0 or len(time) != len(piezo_voltage):
         return None  # Return None if the input arrays are empty or of different lengths
@@ -36,11 +41,30 @@ def fit_piezo_line(time, piezo_voltage):
     return piezo_fit
 
 def peaks(piezo_voltage, laser_voltage):
+    '''
+    Finds peaks in readings from the photodiode.
+    
+    Parameters:
+    
+    piezo_voltage: voltages on the piezo, should be the cleaned version (the output of fit_piezo_line)
+    laser_voltage: voltages on the photodiode
+
+    Returns: 
+
+    peaks_xvalues: voltage values on the piezo corresponding to detected peaks
+    peaks: detected peaks
+    scaled_widths: width of each peak in Volts
+    '''
+    
     peaks_indices, _ = find_peaks(laser_voltage, height= 0.3, distance=10)
     peaks = laser_voltage[peaks_indices]
     peaks_xvalues = piezo_voltage[peaks_indices]
 
-    return peaks_xvalues, peaks
+    widths = peak_widths(laser_voltage, peaks_indices, rel_height=0.5)
+    piezo_voltage_spacing = np.mean(np.diff(piezo_voltage))
+    scaled_widths = widths[0]*piezo_voltage_spacing
+
+    return peaks_xvalues, peaks, scaled_widths
 
 def plot_voltage_vs_time(timestamps, volt_laser, volt_piezo, piezo_fitted, file_name):
     plt.figure(figsize=(12, 6))
@@ -51,20 +75,23 @@ def plot_voltage_vs_time(timestamps, volt_laser, volt_piezo, piezo_fitted, file_
     plt.ylabel('Voltage (V)')
     plt.title('Voltage data vs Time')
     plt.legend()
+    plt.grid()
     plt.xticks(rotation=45)
     plt.tight_layout()
     plt.savefig(file_name)
     # plt.show()  # Uncomment this if you want to display the plot
     plt.close()  # Close the figure to avoid displaying it in-line
 
-def plot_piezo_laser(piezo_fitted, volt_laser, xpeaks, ypeaks, file_name):
+def plot_piezo_laser(piezo_fitted, volt_laser, xpeaks, ypeaks, file_name, width):
     plt.figure(figsize=(12, 6))
-    plt.plot(piezo_fitted, volt_laser, label='Laser Intensity vs. Piezo volt', color='green')
+    plt.plot(piezo_fitted, volt_laser, label='Laser Intensity vs. Piezo volt', color='green', marker='.', linestyle=None)
+    plt.hlines(ypeaks/2, xpeaks-width/2, xpeaks+width/2)
     plt.scatter(xpeaks, ypeaks, marker='x', label='Peak Values')
     plt.xlabel('Voltage Piezo (V)')
     plt.ylabel('Laser Intensity (V)')
     plt.title('Piezo Voltage vs Laser Voltage')
     plt.legend()
+    plt.grid()
     plt.xticks(rotation=45)
     plt.tight_layout()
     plt.savefig(file_name)
@@ -78,6 +105,7 @@ def plot_calibrated_laser(xvalues_freq, volt_laser, file_name):
     plt.ylabel('Laser Intensity (V)')
     plt.title(' Laser Intensity (calibrated)')
     plt.legend()
+    plt.grid()
     plt.xticks(rotation=45)
     plt.tight_layout()
     plt.savefig(file_name)
