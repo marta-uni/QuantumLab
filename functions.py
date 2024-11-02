@@ -66,6 +66,31 @@ def peaks(piezo_voltage, laser_voltage):
 
     return peaks_xvalues, peaks, scaled_widths
 
+def fsr(xpeaks, ypeaks):
+    '''
+    Computes FSR (in volts) as the distance between the two TEM00 peaks. For now it just
+    checks that the separation is bigger than 1V'.
+    '''
+
+    # combine peaks with corrisponding x values and sort them in descending order
+    sorted_peaks = sorted(list(zip(xpeaks, ypeaks)),
+                          key=lambda x: x[1], reverse=True)
+
+    # assume that the distance between the two highest peaks is the fsr
+    # for now it has to be bigger than 1V
+    top_peaks = []
+    for peak in sorted_peaks:
+        if (len(top_peaks) >= 2):
+            break
+        if all(abs(peak[0] - tp[0]) >= 1 for tp in top_peaks):
+            top_peaks.append(peak)
+
+    if (len(top_peaks) == 2):
+        fsr_volt = np.abs(top_peaks[0][0] - top_peaks[1][0])
+        return fsr_volt
+    else:
+        return None
+
 def plot_voltage_vs_time(timestamps, volt_laser, volt_piezo, piezo_fitted, file_name):
     plt.figure(figsize=(12, 6))
     plt.plot(timestamps, volt_laser, label='Volt Laser', color='blue')
