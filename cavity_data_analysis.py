@@ -70,8 +70,6 @@ for i in range(10, 20):
         figure_name = folder_name + '/figures/' + file_name + "_laservolt.pdf"
         fn.plot_piezo_laser(piezo_fitted, volt_laser, xpeaks,
                             ypeaks, figure_name, peak_widths)
-        # figure_name = folder_name + '/figures/' + file_name + "_calibrated.pdf"
-        # fn.plot_calibrated_laser(xvalues_freq, volt_laser, figure_name)
 
     valid_range_condition = (min(xpeaks) < bound * (piezo_fitted[-1] - piezo_fitted[0]) + piezo_fitted[0]) or (
         max(xpeaks) > (1 - bound) * (piezo_fitted[-1] - piezo_fitted[0]) + piezo_fitted[0])
@@ -117,6 +115,9 @@ for i in range(10, 20):
     conv_coeff = fsr_freq/fsr_volt
 
     xvalues_freq = piezo_fitted * conv_coeff + c/expected_wavelength
+    if plot:
+        figure_name = folder_name + '/figures/' + file_name + "_calibrated.pdf"
+        fn.plot_calibrated_laser(xvalues_freq, volt_laser, figure_name)
     '''
 
 print('Finesse: ' + str(np.mean(finesse_list)) +
