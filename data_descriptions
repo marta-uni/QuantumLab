@@ -8,6 +8,10 @@ data 2 directory 29.10.24
   10 data collections without realigning anything at first
   scope_0 - scope_9
 
-data 3 directory 
+data 3 directory 29.10.24
   10 data collections after having slightly realigned 
   scope_10-scope_19
+
+data 4 directory 05.11.24
+  11 data collections after having completely ruined alignment and having partially recovered it
+  scope_0-scope_11
