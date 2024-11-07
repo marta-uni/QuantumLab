@@ -2,6 +2,7 @@ import numpy as np
 from scipy.signal import find_peaks, peak_widths
 import matplotlib.pyplot as plt
 
+
 def crop_to_min_max(time, laser_voltage, piezo_voltage):
     '''Crops time and voltage readings in order to include just one
      frequency sweep from the piezo.'''
@@ -28,7 +29,7 @@ def crop_to_min_max(time, laser_voltage, piezo_voltage):
 
 def fit_piezo_line(time, piezo_voltage):
     '''Converts timestamps in voltages on piezo.
-    
+
     Returns voltages from a linear interpolation of input data.'''
 
     if len(time) == 0 or len(piezo_voltage) == 0 or len(time) != len(piezo_voltage):
@@ -40,12 +41,13 @@ def fit_piezo_line(time, piezo_voltage):
 
     return piezo_fit
 
+
 def peaks(piezo_voltage, laser_voltage):
     '''
     Finds peaks in readings from the photodiode.
-    
+
     Parameters:
-    
+
     piezo_voltage: voltages on the piezo, should be the cleaned version (the output of fit_piezo_line)
     laser_voltage: voltages on the photodiode
 
@@ -55,8 +57,8 @@ def peaks(piezo_voltage, laser_voltage):
     peaks: detected peaks
     scaled_widths: width of each peak in Volts
     '''
-    
-    peaks_indices, _ = find_peaks(laser_voltage, height= 0.3, distance=10)
+
+    peaks_indices, _ = find_peaks(laser_voltage, height=0.3, distance=10)
     peaks = laser_voltage[peaks_indices]
     peaks_xvalues = piezo_voltage[peaks_indices]
 
@@ -65,6 +67,7 @@ def peaks(piezo_voltage, laser_voltage):
     scaled_widths = widths[0]*piezo_voltage_spacing
 
     return peaks_xvalues, peaks, scaled_widths
+
 
 def fsr(xpeaks, ypeaks):
     '''
@@ -91,11 +94,34 @@ def fsr(xpeaks, ypeaks):
     else:
         return None
 
+
+def close_modes(x, expected_mode_distance):
+    '''
+    Returns a list of (voltage) separations between close peaks in our spectrum.
+    These will be separated by mode_distance / fsr = (2/pi) * arccos(1-L/R) - 1 .
+    The definition of "close" depends on expected_mode_distance (the upper bound
+    in voltage difference), which has to be expressed in V.
+    '''
+
+    result = []
+
+    # finding pairs of close adjacent peaks, these will be separated by
+    # mode_distance / fsr = (2/pi) * arccos(1-L/R) - 1
+    for i in range(len(x) - 1):
+        if ((x[i + 1] - x[i]) < expected_mode_distance):
+            result.append(x[i + 1] - x[i])
+
+    # average mode distance, in volts
+    return result
+
+
+
 def plot_voltage_vs_time(timestamps, volt_laser, volt_piezo, piezo_fitted, file_name):
     plt.figure(figsize=(12, 6))
     plt.plot(timestamps, volt_laser, label='Volt Laser', color='blue')
     plt.plot(timestamps, volt_piezo, label='Volt Piezo', color='red')
-    plt.plot(timestamps, piezo_fitted, label='Volt Piezo fitline', color='green')
+    plt.plot(timestamps, piezo_fitted,
+             label='Volt Piezo fitline', color='green')
     plt.xlabel('Time (s)')
     plt.ylabel('Voltage (V)')
     plt.title('Voltage data vs Time')
@@ -107,9 +133,11 @@ def plot_voltage_vs_time(timestamps, volt_laser, volt_piezo, piezo_fitted, file_
     # plt.show()  # Uncomment this if you want to display the plot
     plt.close()  # Close the figure to avoid displaying it in-line
 
+
 def plot_piezo_laser(piezo_fitted, volt_laser, xpeaks, ypeaks, file_name, width):
     plt.figure(figsize=(12, 6))
-    plt.plot(piezo_fitted, volt_laser, label='Laser Intensity vs. Piezo volt', color='green', marker='.', linestyle=None)
+    plt.plot(piezo_fitted, volt_laser, label='Laser Intensity vs. Piezo volt',
+             color='green', marker='.', linestyle=None)
     plt.hlines(ypeaks/2, xpeaks-width/2, xpeaks+width/2)
     plt.scatter(xpeaks, ypeaks, marker='x', label='Peak Values')
     plt.xlabel('Voltage Piezo (V)')
@@ -120,19 +148,22 @@ def plot_piezo_laser(piezo_fitted, volt_laser, xpeaks, ypeaks, file_name, width)
     plt.xticks(rotation=45)
     plt.tight_layout()
     plt.savefig(file_name)
-    #plt.show()
+    # plt.show()
     plt.close()  # Close the figure to avoid displaying it
+
 
 def plot_calibrated_laser(xvalues_freq, volt_laser, file_name):
     plt.figure(figsize=(12, 6))
-    plt.plot(xvalues_freq, volt_laser, label='Laser Intensity vs. freq', color='green')
+    plt.plot(xvalues_freq, volt_laser,
+             label='Laser Intensity vs. freq', color='green')
     plt.xlabel('relative freq values(THz)( offset was set at 780nm ~ 384 THz )')
     plt.ylabel('Laser Intensity (V)')
     plt.title(' Laser Intensity (calibrated)')
     plt.legend()
     plt.grid()
-    plt.ticklabel_format(style='sci', axis='x', scilimits=(12,12), useOffset=False)
+    plt.ticklabel_format(style='sci', axis='x',
+                         scilimits=(12, 12), useOffset=False)
     plt.tight_layout()
     plt.savefig(file_name)
-    #plt.show()
+    # plt.show()
     plt.close()  # Close the figure to avoid displaying it
