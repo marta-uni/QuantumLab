@@ -15,3 +15,7 @@ data 3 directory 29.10.24
 data 4 directory 05.11.24
   11 data collections after having completely ruined alignment and having partially recovered it
   scope_0-scope_11
+
+data 5 directory 08.11.24
+  11 data collections after having further aligned the system and removing downsampling from oscilloscope settings
+  scope_5-scope_15
