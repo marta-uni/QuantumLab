@@ -29,18 +29,59 @@ for file_path in file_paths:
     piezo_fitted = data['piezo_fitted'].to_numpy()
     print (timestamps.shape)
     
+    #ASSUME CONFOCALITY
+    
     # Find peaks 
-    xpeaks, ypeaks, indices = fn.peaks_fsr(piezo_fitted, volt_laser)  #use this one to have 3 peaks
-    #xpeaks, ypeaks, indices = fn.peaks_hfsr(piezo_fitted, volt_laser) #use this one to have 5 peaks (assume confocality within some precision)
+    xpeaks, ypeaks, indices = fn.peaks_hfsr(piezo_fitted, volt_laser) #use this one to have 5 peaks (assume confocality within some precision)
+    
+    #generate expected frequencies
+    expected_freq = np.arange(0, fsr_freq * len(xpeaks), fsr_freq)
+
+    #find calibration, and plot the data
+    coeffs1, coeffs2 = fn.plot_fits(xpeaks, expected_freq, "piezo_voltage_peaks", "expected_frequency", file_name + "calibration-confocal")
+
+    #convert piezo voltages into frequencies
+    calibrated_freqs = coeffs2[0] * piezo_fitted**2 + coeffs2[1] *piezo_fitted + coeffs2[2]
+
+    fn.plot_generic(calibrated_freqs, volt_laser, "calibrated_freqs", "volt_laser", file_name + "calibrated data-confocal")
+
 
     #generate expected frequencies
     expected_freq = np.arange(0, fsr_freq * len(xpeaks), fsr_freq)
 
     #find calibration, and plot the data
-    coeffs1, coeffs2 = fn.plot_fits(xpeaks, expected_freq, "piezo_voltage_peaks", "expected_frequency", file_name + "calibration")
+    coeffs1, coeffs2 = fn.plot_fits(xpeaks, expected_freq, "piezo_voltage_peaks", "expected_frequency", file_name + "calibration-confocal")
 
     #convert piezo voltages into frequencies
     calibrated_freqs = coeffs2[0] * piezo_fitted**2 + coeffs2[1] *piezo_fitted + coeffs2[2]
 
-    fn.plot_generic(calibrated_freqs, volt_laser, "calibrated_freqs", "volt_laser", file_name + "calibrated data")
+    fn.plot_generic(calibrated_freqs, volt_laser, "calibrated_freqs", "volt_laser", file_name + "calibrated data-confocal")
     
+    '''
+    #DONT ASSUME CONFOCALITY
+    
+    #Find peaks
+    xpeaks, ypeaks, indices = fn.peaks_fsr(piezo_fitted, volt_laser)  #use this one to have 3 peaks
+    #generate expected frequencies
+    expected_freq = np.arange(0, fsr_freq * len(xpeaks), fsr_freq)
+
+    #find calibration, and plot the data
+    coeffs1, coeffs2 = fn.plot_fits(xpeaks, expected_freq, "piezo_voltage_peaks", "expected_frequency", file_name + "calibration-confocal")
+
+    #convert piezo voltages into frequencies
+    calibrated_freqs = coeffs2[0] * piezo_fitted**2 + coeffs2[1] *piezo_fitted + coeffs2[2]
+
+    fn.plot_generic(calibrated_freqs, volt_laser, "calibrated_freqs", "volt_laser", file_name + "calibrated data-confocal")
+
+
+    #generate expected frequencies
+    expected_freq = np.arange(0, fsr_freq * len(xpeaks), fsr_freq)
+
+    #find calibration, and plot the data
+    coeffs1, coeffs2 = fn.plot_fits(xpeaks, expected_freq, "piezo_voltage_peaks", "expected_frequency", file_name + "calibration-notconfocal")
+
+    #convert piezo voltages into frequencies
+    calibrated_freqs = coeffs2[0] * piezo_fitted**2 + coeffs2[1] *piezo_fitted + coeffs2[2]
+
+    fn.plot_generic(calibrated_freqs, volt_laser, "calibrated_freqs", "volt_laser", file_name + "calibrated data-notconfocal") 
+    '''
