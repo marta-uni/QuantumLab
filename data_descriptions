@@ -18,4 +18,14 @@ data 4 directory 05.11.24
 
 data 5 directory 08.11.24
   11 data collections after having further aligned the system and removing downsampling from oscilloscope settings
+  laser temperature was 23.790 °C
   scope_5-scope_15
+
+data 6 directory 12.11.24
+  scope_0 to scope_4, scope_10, scope_11 : data collections with different number of samples, we ended up taking
+  data with 65000 samples per file
+  scope_15 to scope_25: 11 data collections adjusting piezo range and laser current in order to span 2 free spectral ranges
+  laser temperature was 23.790 °C
+    scope_15 to scope_20 had 49.484 mA of laser current, piezo range was 15 Vpp, with offset -2.5V
+    scope_21 had 48.951 mA of laser current, piezo range was 15 Vpp, with offset -2.5V
+    scope_22 to scope_25 had 49.484 mA of laser current, piezo range was 15 Vpp, with offset -1V
