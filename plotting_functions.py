@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import functions as fn
 
 
-def plot_voltage_vs_time(timestamps, volt_laser, volt_piezo, piezo_fitted, file_name):
+def plot_voltage_vs_time(timestamps, volt_laser, volt_piezo, piezo_fitted, file_name, save=False):
     plt.figure(figsize=(12, 6))
     plt.plot(timestamps, volt_laser, label='Volt Laser', color='blue')
     plt.plot(timestamps, volt_piezo, label='Volt Piezo', color='red')
@@ -14,12 +14,15 @@ def plot_voltage_vs_time(timestamps, volt_laser, volt_piezo, piezo_fitted, file_
     plt.legend()
     plt.xticks(rotation=45)
     plt.tight_layout()
-    plt.savefig(file_name)
-    # plt.show()  # Uncomment this if you want to display the plot
-    plt.close()  # Close the figure to avoid displaying it in-line
+    if save:
+        plt.savefig(file_name)
+        plt.close()
+    else:
+        plt.show()
+    
 
 
-def plot_piezo_laser(piezo_fitted, volt_laser, xpeaks, ypeaks, file_name, width=None):
+def plot_piezo_laser(piezo_fitted, volt_laser, xpeaks, ypeaks, file_name, width=None, save=False):
     plt.figure(figsize=(12, 6))
     plt.plot(piezo_fitted, volt_laser, label='Laser Intensity vs. Piezo volt',
              color='green', marker='.', linestyle=None)
@@ -33,12 +36,14 @@ def plot_piezo_laser(piezo_fitted, volt_laser, xpeaks, ypeaks, file_name, width=
     plt.grid()
     plt.xticks(rotation=45)
     plt.tight_layout()
-    plt.savefig(file_name)
-    plt.show()
-    plt.close()  # Close the figure to avoid displaying it
+    if save:
+        plt.savefig(file_name)
+        plt.close()
+    else:
+        plt.show() # Close the figure to avoid displaying it
 
 
-def plot_calibrated_laser(xvalues_freq, volt_laser, file_name, extra_title=None):
+def plot_calibrated_laser(xvalues_freq, volt_laser, file_name, extra_title=None, save=False):
     plt.figure(figsize=(12, 6))
     plt.scatter(xvalues_freq, volt_laser, s=5,
              label='Laser Intensity vs. freq', color='green')
@@ -50,12 +55,14 @@ def plot_calibrated_laser(xvalues_freq, volt_laser, file_name, extra_title=None)
     plt.ticklabel_format(style='sci', axis='x',
                          scilimits=(9,9), useOffset=False)
     plt.tight_layout()
-    # plt.savefig(file_name)
-    plt.show()
-    plt.close()  # Close the figure to avoid displaying it
+    if save:
+        plt.savefig(file_name)
+        plt.close()
+    else:
+        plt.show()
 
 
-def plot_generic(x, y, x_label, y_label, file_name):
+def plot_generic(x, y, x_label, y_label, file_name, save=False):
     coeffs_1, coeffs_2, x_fit, lin_fit, quad_fit = fn.lin_quad_fits(x, y)
 
     # Create the plot
@@ -72,9 +79,11 @@ def plot_generic(x, y, x_label, y_label, file_name):
     plt.xticks(rotation=45)
     plt.grid()
     plt.tight_layout()
-    #plt.savefig(file_name)
-    plt.show()
-    # plt.close()  # Close the figure to avoid displaying it
+    if save:
+        plt.savefig(file_name)
+        plt.close()
+    else:
+        plt.show()
 
 
 '''
@@ -103,7 +112,7 @@ def plot_generic(x, y, x_label, y_label, file_name):
 '''
 
 
-def plot_scatter_generic(time, piezo, peaks_index, x_label, y_label, file_name):
+def plot_scatter_generic(time, piezo, peaks_index, x_label, y_label, file_name, save=False):
     # Create the plot
     plt.figure(figsize=(12, 6))
     plt.scatter(time[peaks_index], piezo[peaks_index],
@@ -117,6 +126,8 @@ def plot_scatter_generic(time, piezo, peaks_index, x_label, y_label, file_name):
     plt.xticks(rotation=45)
     plt.grid()
     plt.tight_layout()
-    plt.savefig(file_name)
-    # plt.show()
-    plt.close()  # Close the figure to avoid displaying it
+    if save:
+        plt.savefig(file_name)
+        plt.close()
+    else:
+        plt.show()

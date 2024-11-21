@@ -32,7 +32,7 @@ def peaks_hfsr(piezo_voltage, laser_voltage):
     return peaks_xvalues, peaks, peaks_indices
 
 
-def plot_fits(x, y, x_label, y_label, file_name, confocal):
+def plot_fits(x, y, x_label, y_label, file_name, confocal, save=False):
     coeffs_1, coeffs_2, x_fit, lin_fit, quad_fit = fn.lin_quad_fits(x, y)
 
     # Format the coefficients for display
@@ -57,7 +57,9 @@ def plot_fits(x, y, x_label, y_label, file_name, confocal):
     plt.xticks(rotation=45)
     plt.grid()
     plt.tight_layout()
-    # plt.savefig(file_name + ".pdf")
-    plt.show()
-    # plt.close()  # Close the figure to avoid displaying it
+    if save:
+        plt.savefig(file_name)
+        plt.close()
+    else:
+        plt.show()
     return coeffs_1, coeffs_2

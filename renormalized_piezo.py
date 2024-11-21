@@ -52,13 +52,13 @@ for file_path in file_paths:
 
     # find calibration, and plot the data
     coeffs1, coeffs2 = fn2.plot_fits(xpeaks, expected_freq, "Peaks in piezo voltage (V)",
-                                     "Expected frequency (Hz)", figure_path + "_calibration_confocal", True)
+                                     "Expected frequency (Hz)", figure_path + "_calibration_confocal.pdf", confocal=True, save=False)
 
     # convert piezo voltages into frequencies
     calibrated_freqs = coeffs2[0] * piezo_fitted**2 + \
         coeffs2[1] * piezo_fitted + coeffs2[2]
 
-    pf.plot_calibrated_laser(calibrated_freqs, volt_laser, figure_path + "_data_confocal", ": assuming confocality")
+    pf.plot_calibrated_laser(calibrated_freqs, volt_laser, figure_path + "_data_confocal.pdf", ": assuming confocality", save=False)
     # pf.plot_generic(calibrated_freqs, volt_laser, "calibrated_freqs",
     #                 "volt_laser", file_name + "calibrated_data_confocal")
 
@@ -85,14 +85,14 @@ for file_path in file_paths:
 
     # find calibration, and plot the data
     coeffs1, coeffs2 = fn2.plot_fits(x_nonconfoc, expected_freq, "Peaks in piezo voltage (V)",
-                                     "Expected frequency (Hz)", figure_path + "_calibration_confocal", False)
+                                     "Expected frequency (Hz)", figure_path + "_calibration_non_confocal.pdf", confocal=False, save=False)
 
     # convert piezo voltages into frequencies
     calibrated_freqs = coeffs2[0] * piezo_fitted**2 + \
         coeffs2[1] * piezo_fitted + coeffs2[2]
 
     pf.plot_calibrated_laser(calibrated_freqs, volt_laser, figure_path +
-                             "_data_confocal", ": without assuming confocality")
+                             "_data_non_confocal.pdf", ": without assuming confocality", save=False)
     # pf.plot_generic(calibrated_freqs, volt_laser, "calibrated_freqs", "volt_laser", file_name + "calibrated_data-nonconfocal")
 
     peak_freq = calibrated_freqs[indices]
