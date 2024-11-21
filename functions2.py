@@ -32,7 +32,7 @@ def peaks_hfsr(piezo_voltage, laser_voltage):
     return peaks_xvalues, peaks, peaks_indices
 
 
-def plot_fits(x, y, x_label, y_label, file_name):
+def plot_fits(x, y, x_label, y_label, file_name, confocal):
     coeffs_1, coeffs_2, x_fit, lin_fit, quad_fit = fn.lin_quad_fits(x, y)
 
     # Format the coefficients for display
@@ -49,7 +49,10 @@ def plot_fits(x, y, x_label, y_label, file_name):
              linestyle='--')  # Plot the quadratic fit
     plt.xlabel(x_label)
     plt.ylabel(y_label)
-    plt.title(x_label + ' vs ' + y_label)
+    if (confocal):
+        plt.title('Assuming confocality')
+    else:
+        plt.title('Without assuming confocality')
     plt.legend()
     plt.xticks(rotation=45)
     plt.grid()

@@ -38,17 +38,17 @@ def plot_piezo_laser(piezo_fitted, volt_laser, xpeaks, ypeaks, file_name, width=
     plt.close()  # Close the figure to avoid displaying it
 
 
-def plot_calibrated_laser(xvalues_freq, volt_laser, file_name):
+def plot_calibrated_laser(xvalues_freq, volt_laser, file_name, extra_title=None):
     plt.figure(figsize=(12, 6))
-    plt.plot(xvalues_freq, volt_laser,
+    plt.scatter(xvalues_freq, volt_laser, s=5,
              label='Laser Intensity vs. freq', color='green')
-    plt.xlabel('relative freq values(THz)( offset was set at 780nm ~ 384 THz )')
+    plt.xlabel('Relative frequency values (GHz)')
     plt.ylabel('Laser Intensity (V)')
-    plt.title(' Laser Intensity (calibrated)')
+    plt.title(' Laser Intensity (calibrated)' + extra_title)
     plt.legend()
     plt.grid()
     plt.ticklabel_format(style='sci', axis='x',
-                         scilimits=(12, 12), useOffset=False)
+                         scilimits=(9,9), useOffset=False)
     plt.tight_layout()
     # plt.savefig(file_name)
     plt.show()
