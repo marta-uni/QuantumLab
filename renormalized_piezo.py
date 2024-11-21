@@ -8,13 +8,15 @@ c = 3e8
 l = 50e-3
 fsr_freq = c/(2*l)
 
-save_data = False
+'''This code computes the conversion between voltages on the piezo and frequencies, imposing that peaks are evenly
+spaced and fitting them to a parabola. This process is followed both in the assumption that the cavity is confocal
+(even and odd modes are evenly spaced) and without this assumption (only even modes are considered). It then saves
+a csv file with 3 columns: freq_confoc, freq_non_confoc, volt_laser.'''
 
-'this code reads the csv files, crops them to a window where the piezo voltage is just increasing, removes NaNs and fits the piezo data linearly. It then saves a csv file with  4 columns: timestamps, volt_laser, volt_piezo, piezo_fitted'
+save_data = False
 
 # Define the folder and file paths
 folder_name = 'data6'
-# Example: process files scope_15.csv to scope_25.csv
 file_paths = [
     f"{folder_name}/clean_data/scope_{i}_cropped.csv" for i in range(15, 26)]
 
@@ -29,7 +31,6 @@ for file_path in file_paths:
     data = pd.read_csv(file_path, skiprows=2, names=['timestamp', 'volt_laser', 'volt_piezo', 'piezo_fitted'], dtype={
                        'timestamp': float, 'volt_laser': float, 'volt_piezo': float, 'piezo_fitted': float})
 
-    timestamps = data['timestamp'].to_numpy()
     volt_laser = data['volt_laser'].to_numpy()
     piezo_fitted = data['piezo_fitted'].to_numpy()
 

@@ -2,6 +2,7 @@ import pandas as pd
 import functions as fn
 import fit_peaks as fp
 import numpy as np
+import plotting_functions as pf
 
 R = 0.05  # m, mirror radius of curvature
 c = 3e8  # speed of light
@@ -161,12 +162,12 @@ for i in range(15, 26):
     xvalues_freq = piezo_fitted * conv_coeff + c/expected_wavelength
 
     # figure_name = folder_name + '/figures/' + file_name + "_time.pdf"
-    # fn.plot_voltage_vs_time(timestamps, volt_laser,
+    # pf.plot_voltage_vs_time(timestamps, volt_laser,
     #                         volt_piezo, piezo_fitted, figure_name)
 
     # figure_name = folder_name + '/figures/' + file_name + "_laservolt_fit.pdf"
-    # fn.plot_piezo_laser_fit(piezo_fitted, volt_laser, file_name=figure_name, A=A_list,
+    # pf.plot_piezo_laser_fit(piezo_fitted, volt_laser, file_name=figure_name, A=A_list,
     #                         x0=x0_list, gamma=gamma_list, xpeaks=xpeaks, ypeaks=ypeaks, width=peak_widths)
 
     # figure_name = folder_name + '/figures/' + file_name + "_calibrated.pdf"
-    # fn.plot_calibrated_laser(xvalues_freq, volt_laser, figure_name)
+    # pf.plot_calibrated_laser(xvalues_freq, volt_laser, figure_name)
