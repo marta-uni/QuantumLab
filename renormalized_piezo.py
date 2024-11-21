@@ -7,7 +7,8 @@ import numpy as np
 c = 3e8
 l = 50e-3
 fsr_freq = c/(2*l)
-expected_wavelength = 780e-9
+
+save_data = False
 
 'this code reads the csv files, crops them to a window where the piezo voltage is just increasing, removes NaNs and fits the piezo data linearly. It then saves a csv file with  4 columns: timestamps, volt_laser, volt_piezo, piezo_fitted'
 
@@ -58,7 +59,8 @@ for file_path in file_paths:
     calibrated_freqs = coeffs2[0] * piezo_fitted**2 + \
         coeffs2[1] * piezo_fitted + coeffs2[2]
 
-    pf.plot_calibrated_laser(calibrated_freqs, volt_laser, figure_path + "_data_confocal.pdf", ": assuming confocality", save=False)
+    pf.plot_calibrated_laser(calibrated_freqs, volt_laser, figure_path +
+                             "_data_confocal.pdf", ": assuming confocality", save=False)
     # pf.plot_generic(calibrated_freqs, volt_laser, "calibrated_freqs",
     #                 "volt_laser", file_name + "calibrated_data_confocal")
 
@@ -74,7 +76,7 @@ for file_path in file_paths:
         f'Displacements from confocality are:\t{displacement1/1e6:.0f} MHz\t{displacement1/1e6:.0f} MHz\n')
 
     # DONT ASSUME CONFOCALITY
-    print('without assuming confocality')
+    print('Without assuming confocality')
 
     x_nonconfoc = xpeaks[::2]
     y_nonconfoc = ypeaks[::2]
@@ -88,14 +90,14 @@ for file_path in file_paths:
                                      "Expected frequency (Hz)", figure_path + "_calibration_non_confocal.pdf", confocal=False, save=False)
 
     # convert piezo voltages into frequencies
-    calibrated_freqs = coeffs2[0] * piezo_fitted**2 + \
+    calibrated_freqs_1 = coeffs2[0] * piezo_fitted**2 + \
         coeffs2[1] * piezo_fitted + coeffs2[2]
 
-    pf.plot_calibrated_laser(calibrated_freqs, volt_laser, figure_path +
+    pf.plot_calibrated_laser(calibrated_freqs_1, volt_laser, figure_path +
                              "_data_non_confocal.pdf", ": without assuming confocality", save=False)
     # pf.plot_generic(calibrated_freqs, volt_laser, "calibrated_freqs", "volt_laser", file_name + "calibrated_data-nonconfocal")
 
-    peak_freq = calibrated_freqs[indices]
+    peak_freq = calibrated_freqs_1[indices]
 
     # displacement of the odd peaks from half the fsr (in Hz)
     displacement1 = (peak_freq[1] - peak_freq[0]) - \
@@ -105,3 +107,13 @@ for file_path in file_paths:
 
     print(
         f'Displacements from confocality are:\t{displacement1/1e6:.0f} MHz\t{displacement1/1e6:.0f} MHz\n')
+
+    if save_data:
+        data = {'freq_confoc': calibrated_freqs,
+                'freq_non_confoc': calibrated_freqs_1,
+                'volt_laser': volt_laser}
+        df = pd.DataFrame(data)
+
+        new_file_path = f"{folder_name}/clean_data/{os.path.basename(file_name)}_calib.csv"
+        df.to_csv(new_file_path, index=False)
+        print(f"Data saved to {new_file_path}")
