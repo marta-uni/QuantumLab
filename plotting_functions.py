@@ -43,7 +43,7 @@ def plot_piezo_laser(piezo_fitted, volt_laser, xpeaks, ypeaks, file_name, width=
         plt.show() # Close the figure to avoid displaying it
 
 
-def plot_calibrated_laser(xvalues_freq, volt_laser, file_name, extra_title=None, save=False):
+def plot_calibrated_laser(xvalues_freq, volt_laser, file_name, extra_title='', save=False):
     plt.figure(figsize=(12, 6))
     plt.scatter(xvalues_freq, volt_laser, s=5,
              label='Laser Intensity vs. freq', color='green')
