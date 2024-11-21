@@ -73,7 +73,7 @@ for file_path in file_paths:
         (peak_freq[4] - peak_freq[2]) / 2
 
     print(
-        f'Displacements from confocality are:\t{displacement1/1e6:.0f} MHz\t{displacement1/1e6:.0f} MHz\n')
+        f'Displacements from confocality are:\t{displacement1/1e6:.0f} MHz\t{displacement2/1e6:.0f} MHz\n')
 
     # DONT ASSUME CONFOCALITY
     print('Without assuming confocality')
@@ -106,7 +106,7 @@ for file_path in file_paths:
         (peak_freq[4] - peak_freq[2]) / 2
 
     print(
-        f'Displacements from confocality are:\t{displacement1/1e6:.0f} MHz\t{displacement1/1e6:.0f} MHz\n')
+        f'Displacements from confocality are:\t{displacement1/1e6:.0f} MHz\t{displacement2/1e6:.0f} MHz\n')
 
     if save_data:
         data = {'freq_confoc': calibrated_freqs,
