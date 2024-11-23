@@ -1,6 +1,7 @@
 import pandas as pd
 import functions as fn
 import numpy as np
+import plotting_functions as pf
 
 # boolean determining wheter we want a plot every time
 plot = True
@@ -72,11 +73,11 @@ for i in range(10, 20):
     if plot:
         # Plot volt_piezo vs. timestamp
         figure_name = folder_name + '/figures/' + file_name + "_time.pdf"
-        fn.plot_voltage_vs_time(timestamps, volt_laser,
+        pf.plot_voltage_vs_time(timestamps, volt_laser,
                                 volt_piezo, piezo_fitted, figure_name)
         # Plot volt_piezo vs. volt_laser
         figure_name = folder_name + '/figures/' + file_name + "_laservolt.pdf"
-        fn.plot_piezo_laser(piezo_fitted, volt_laser, xpeaks,
+        pf.plot_piezo_laser(piezo_fitted, volt_laser, xpeaks,
                             ypeaks, figure_name, peak_widths)
 
     valid_range_condition = (min(xpeaks) < bound * (piezo_fitted[-1] - piezo_fitted[0]) + piezo_fitted[0]) or (
@@ -137,7 +138,7 @@ for i in range(10, 20):
     xvalues_freq = piezo_fitted * conv_coeff + c/expected_wavelength
     if plot:
         figure_name = folder_name + '/figures/' + file_name + "_calibrated.pdf"
-        fn.plot_calibrated_laser(xvalues_freq, volt_laser, figure_name)
+        pf.plot_calibrated_laser(xvalues_freq, volt_laser, figure_name)
 
 print('Finesse: ' + str(np.mean(finesse_list)) +
       ' +/- ' + str(np.std(finesse_list)))

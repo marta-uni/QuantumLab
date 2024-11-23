@@ -1,0 +1,42 @@
+data 1 directory 25.10.24
+  scope_0 : almost aligned cavity
+  scope_1 : Maximized the first peak of the first group
+  scope_2 : maximized the first peak of the second group
+  scope_4: heated the cavity so that a full free spectral range was visible
+
+data 2 directory 29.10.24
+  10 data collections without realigning anything at first
+  scope_0 - scope_9
+
+data 3 directory 29.10.24
+  10 data collections after having slightly realigned 
+  scope_10-scope_19
+
+data 4 directory 05.11.24
+  11 data collections after having completely ruined alignment and having partially recovered it
+  scope_0-scope_11
+
+data 5 directory 08.11.24
+  11 data collections after having further aligned the system and removing downsampling from oscilloscope settings
+  laser temperature was 23.790 °C
+  scope_5-scope_15
+
+data 6 directory 12.11.24
+  scope_0 to scope_4, scope_10, scope_11 : data collections with different number of samples, we ended up taking
+  data with 65000 samples per file
+  scope_15 to scope_25: 11 data collections adjusting piezo range and laser current in order to span 2 free spectral ranges
+  laser temperature was 23.790 °C
+    scope_15 to scope_20 had 49.484 mA of laser current, piezo range was 15 Vpp, with offset -2.5V
+    scope_21 had 48.951 mA of laser current, piezo range was 15 Vpp, with offset -2.5V
+    scope_22 to scope_25 had 49.484 mA of laser current, piezo range was 15 Vpp, with offset -1V
+
+data 7 directory 19.11.24
+diode temperature was 36.7°C, temperature of Rb cell was 56.8°C
+pictures of the size of the beam can be found in spot_size folder
+  scope_30: measured intesity = 0.290mW, transmission = 63% (od=0.2)
+  scope_31: measured intesity = 0.202mW, transmission = 50% (od=0.3)
+  scope_32: don't use it 
+  scope_33: measured intensity = 0.479mW, transmission = 40% (od=0.4)
+  scope_34: measured intensity = 0.479mW, transmission = 32% (od=0.5)
+
+

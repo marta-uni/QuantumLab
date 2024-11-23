@@ -1,0 +1,120 @@
+FSR for data6/scope_15.csv: 5.119285 +/- 0.000224 V
+Finesse: 629 +/- 10
+Mode distances:
+[3.47777713 2.62648189] +/-     [0.00082076 0.00024952] (even->odd)
+[2.92694709 2.49280299] +/-     [0.00029922 0.00016041] (odd->even)
+L = 0.050470 +/- 0.000004 m
+FSR for data6/scope_15.csv: 2.972048 +/- 0.000251 GHz (the left one)
+Displacement of odd peaks from half the FSR:
+First odd peak: 160 MHz
+Second odd peak: 39 MHz
+
+FSR for data6/scope_16.csv: 5.068535 +/- 0.000161 V
+Finesse: 681 +/- 10
+Mode distances:
+[3.37514316 2.59743986] +/-     [0.00037277 0.00017684] (even->odd)
+[2.85534974 2.47109502] +/-     [0.00025487 0.0001516 ] (odd->even)
+L = 0.052367 +/- 0.000003 m
+FSR for data6/scope_16.csv: 2.864391 +/- 0.000185 GHz (the left one)
+Displacement of odd peaks from half the FSR:
+First odd peak: 147 MHz
+Second odd peak: 36 MHz
+
+FSR for data6/scope_17.csv: 6.210053 +/- 0.000658 V
+Finesse: 739 +/- 13
+Mode distances:
+[3.33589576 2.5654125 ] +/-     [0.00066194 0.00025475] (even->odd)
+[2.87415735 2.46279986] +/-     [0.00028769 0.00019624] (odd->even)
+L = 0.054114 +/- 0.000005 m
+FSR for data6/scope_17.csv: 2.771903 +/- 0.000255 GHz (the left one)
+Displacement of odd peaks from half the FSR:
+First odd peak: 103 MHz
+Second odd peak: 23 MHz
+
+FSR for data6/scope_18.csv: 6.021016 +/- 0.000252 V
+Finesse: 835 +/- 13
+Mode distances:
+[3.20603939 2.54434749] +/-     [0.000434   0.00017926] (even->odd)
+[2.81497644 2.44453738] +/-     [0.00038132 0.00019117] (odd->even)
+L = 0.051722 +/- 0.000003 m
+FSR for data6/scope_18.csv: 2.900129 +/- 0.000191 GHz (the left one)
+Displacement of odd peaks from half the FSR:
+First odd peak: 94 MHz
+Second odd peak: 24 MHz
+
+FSR for data6/scope_19.csv: 5.997358 +/- 0.000592 V
+Finesse: 822 +/- 15
+Mode distances:
+[3.18179293 2.55555542] +/-     [0.00067781 0.00017105] (even->odd)
+[2.81556501 2.4381504 ] +/-     [0.0003665  0.00020476] (odd->even)
+L = 0.052040 +/- 0.000005 m
+FSR for data6/scope_19.csv: 2.882386 +/- 0.000270 GHz (the left one)
+Displacement of odd peaks from half the FSR:
+First odd peak: 88 MHz
+Second odd peak: 28 MHz
+
+FSR for data6/scope_20.csv: 5.866983 +/- 0.000213 V
+Finesse: 796 +/- 15
+Mode distances:
+[3.12320699 2.50749132] +/-     [0.00034231 0.00015812] (even->odd)
+[2.74377603 2.36172129] +/-     [0.00030076 0.00088093] (odd->even)
+L = 0.045161 +/- 0.000004 m
+FSR for data6/scope_20.csv: 3.321426 +/- 0.000276 GHz (the left one)
+Displacement of odd peaks from half the FSR:
+First odd peak: 107 MHz
+Second odd peak: 41 MHz
+
+FSR for data6/scope_21.csv: 6.419276 +/- 0.000203 V
+Finesse: 879 +/- 15
+Mode distances:
+[3.42494157 2.62380721] +/-     [0.00052176 0.00019284] (even->odd)
+[2.99433488 2.48670484] +/-     [0.00052864 0.00015385] (odd->even)
+L = 0.054985 +/- 0.000003 m
+FSR for data6/scope_21.csv: 2.728041 +/- 0.000145 GHz (the left one)
+Displacement of odd peaks from half the FSR:
+First odd peak: 91 MHz
+Second odd peak: 29 MHz
+
+FSR for data6/scope_22.csv: 6.464945 +/- 0.000388 V
+Finesse: 792 +/- 19
+Mode distances:
+[3.51582493 2.6379262 ] +/-     [0.00050009 0.00043091] (even->odd)
+[2.94911957 2.48245628] +/-     [0.00060354 0.00025549] (odd->even)
+L = 0.058285 +/- 0.000005 m
+FSR for data6/scope_22.csv: 2.573576 +/- 0.000218 GHz (the left one)
+Displacement of odd peaks from half the FSR:
+First odd peak: 113 MHz
+Second odd peak: 31 MHz
+
+FSR for data6/scope_23.csv: 6.263265 +/- 0.000216 V
+Finesse: 901 +/- 17
+Mode distances:
+[3.37919355 2.61405953] +/-     [0.0002709  0.00022958] (even->odd)
+[2.88407143 2.46861588] +/-     [0.00030848 0.00017333] (odd->even)
+L = 0.055745 +/- 0.000003 m
+FSR for data6/scope_23.csv: 2.690821 +/- 0.000146 GHz (the left one)
+Displacement of odd peaks from half the FSR:
+First odd peak: 106 MHz
+Second odd peak: 31 MHz
+
+FSR for data6/scope_24.csv: 6.275103 +/- 0.000210 V
+Finesse: 787 +/- 17
+Mode distances:
+[3.37233359 2.57635751] +/-     [0.00025895 0.00024679] (even->odd)
+[2.9027694 2.453751 ]   +/-     [0.00027844 0.00025095] (odd->even)
+L = 0.053448 +/- 0.000003 m
+FSR for data6/scope_24.csv: 2.806453 +/- 0.000175 GHz (the left one)
+Displacement of odd peaks from half the FSR:
+First odd peak: 105 MHz
+Second odd peak: 27 MHz
+
+FSR for data6/scope_25.csv: 6.209495 +/- 0.000611 V
+Finesse: 726 +/- 11
+Mode distances:
+[3.34139681 2.58914589] +/-     [0.00059463 0.00026603] (even->odd)
+[2.86809837 2.44446418] +/-     [0.00027979 0.00016374] (odd->even)
+L = 0.055600 +/- 0.000005 m
+FSR for data6/scope_25.csv: 2.697833 +/- 0.000225 GHz (the left one)
+Displacement of odd peaks from half the FSR:
+First odd peak: 103 MHz
+Second odd peak: 31 MHz

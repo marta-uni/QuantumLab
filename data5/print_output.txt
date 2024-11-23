@@ -1,0 +1,87 @@
+FSR for data5/scope_5.csv: 5.682292 +/- 0.000180 V
+Finesse: 939 +/- 18
+Mode distances:
+[2.94617023]    +/-     [0.00017029]    (even->odd)
+[2.73612156]    +/-     [8.7329878e-05] (odd->even)
+L = 0.052902 +/- 0.000003 m
+FSR for data5/scope_5.csv: 2.835451 +/- 0.000154 GHz
+
+FSR for data5/scope_6.csv: 5.649494 +/- 0.000170 V
+Finesse: 928 +/- 15
+Mode distances:
+[2.99058576]    +/-     [0.00021521]    (even->odd)
+[2.65890789]    +/-     [0.0001628]     (odd->even)
+L = 0.054604 +/- 0.000004 m
+FSR for data5/scope_6.csv: 2.747027 +/- 0.000200 GHz
+
+FSR for data5/scope_7.csv: 5.794900 +/- 0.000250 V
+Finesse: 857 +/- 18
+Mode distances:
+[3.0951363]     +/-     [0.00026304]    (even->odd)
+[2.69976349]    +/-     [0.00017997]    (odd->even)
+L = 0.055348 +/- 0.000005 m
+FSR for data5/scope_7.csv: 2.710108 +/- 0.000229 GHz
+
+FSR for data5/scope_8.csv: 5.830389 +/- 0.000115 V
+Finesse: 851 +/- 11
+Mode distances:
+[3.09601844]    +/-     [0.00014186]    (even->odd)
+[2.73437056]    +/-     [0.00014195]    (odd->even)
+L = 0.054864 +/- 0.000003 m
+FSR for data5/scope_8.csv: 2.734035 +/- 0.000145 GHz
+
+FSR for data5/scope_9.csv: 5.818150 +/- 0.000200 V
+Finesse: 846 +/- 14
+Mode distances:
+[3.08252656]    +/-     [0.00023971]    (even->odd)
+[2.73562382]    +/-     [0.00017689]    (odd->even)
+L = 0.054676 +/- 0.000004 m
+FSR for data5/scope_9.csv: 2.743432 +/- 0.000215 GHz
+
+FSR for data5/scope_10.csv: 5.850095 +/- 0.000211 V
+Finesse: 678 +/- 12
+Mode distances:
+[3.15782239 2.33002462] +/-     [0.00024579 0.00017407] (even->odd)
+[2.69227253]    +/-     [0.00016326]    (odd->even)
+L = 0.047145 +/- 0.000003 m
+FSR for data5/scope_10.csv: 3.181679 +/- 0.000214 GHz
+
+FSR for data5/scope_11.csv: 5.929809 +/- 0.000230 V
+Finesse: 744 +/- 14
+Mode distances:
+[3.18749179 2.38595707] +/-     [0.00025116 0.0002803 ] (even->odd)
+[2.74231752]    +/-     [0.00018173]    (odd->even)
+L = 0.050412 +/- 0.000004 m
+FSR for data5/scope_11.csv: 2.975485 +/- 0.000225 GHz
+
+FSR for data5/scope_12.csv: 5.996113 +/- 0.000160 V
+Finesse: 709 +/- 10
+Mode distances:
+[3.26428061 2.38226312] +/-     [0.00019518 0.00018704] (even->odd)
+[2.73183192]    +/-     [0.00014348]    (odd->even)
+L = 0.049749 +/- 0.000003 m
+FSR for data5/scope_12.csv: 3.015148 +/- 0.000167 GHz
+
+FSR for data5/scope_13.csv: 5.970663 +/- 0.000307 V
+Finesse: 873 +/- 19
+Mode distances:
+[3.19762708]    +/-     [0.00031778]    (even->odd)
+[2.77303591]    +/-     [0.00017778]    (odd->even)
+L = 0.055574 +/- 0.000005 m
+FSR for data5/scope_13.csv: 2.699124 +/- 0.000244 GHz
+
+FSR for data5/scope_14.csv: 6.008802 +/- 0.000360 V
+Finesse: 788 +/- 14
+Mode distances:
+[3.2203202  2.38916835] +/-     [0.00037149 0.00010994] (even->odd)
+[2.78848218]    +/-     [0.00016046]    (odd->even)
+L = 0.043191 +/- 0.000003 m
+FSR for data5/scope_14.csv: 3.472972 +/- 0.000274 GHz
+
+FSR for data5/scope_15.csv: 6.118458 +/- 0.000229 V
+Finesse: 911 +/- 19
+Mode distances:
+[3.37613883 2.4024062 ] +/-     [0.00027659 0.0003373 ] (even->odd)
+[2.74231909]    +/-     [0.00020148]    (odd->even)
+L = 0.052478 +/- 0.000004 m
+FSR for data5/scope_15.csv: 2.858346 +/- 0.000220 GHz
