@@ -29,3 +29,14 @@ data 6 directory 12.11.24
     scope_15 to scope_20 had 49.484 mA of laser current, piezo range was 15 Vpp, with offset -2.5V
     scope_21 had 48.951 mA of laser current, piezo range was 15 Vpp, with offset -2.5V
     scope_22 to scope_25 had 49.484 mA of laser current, piezo range was 15 Vpp, with offset -1V
+
+data 7 directory 19.11.24
+diode temperature was 36.7°C, temperature of Rb cell was 56.8°C
+pictures of the size of the beam can be found in spot_size folder
+  scope_30: measured intesity = 0.290mW, transmission = 63% (od=0.2)
+  scope_31: measured intesity = 0.202mW, transmission = 50% (od=0.3)
+  scope_32: don't use it 
+  scope_33: measured intensity = 0.479mW, transmission = 40% (od=0.4)
+  scope_34: measured intensity = 0.479mW, transmission = 32% (od=0.5)
+
+
