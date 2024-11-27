@@ -39,4 +39,24 @@ pictures of the size of the beam can be found in spot_size folder
   scope_33: measured intensity = 0.479mW, transmission = 40% (od=0.4)
   scope_34: measured intensity = 0.479mW, transmission = 32% (od=0.5)
 
+data 8 directory 22.11.24
+explaination can be found at https://docs.google.com/spreadsheets/d/1G2vxjxQVqSI2jjG1lxHizMkwS56koIbeGkFhbM56yuM/edit?usp=sharing
 
+data 9 directory 26.11.24
+scope_x explaination can be found at https://docs.google.com/spreadsheets/d/1G2vxjxQVqSI2jjG1lxHizMkwS56koIbeGkFhbM56yuM/edit?usp=sharing
+data from 4 channel oscilloscope was taken at 65°C of cell temperature and 36.9°C of diode temperature
+fixed piezo 0:  piezo had -2.280V offset
+                amplitude of modulation was 340mVpp
+                offset of modulation was -20mVpp
+                I DON'T KNOW ZERO POINT OF CURRENT MODULATION, AS IN THE PICTURE I CAN ONLY SEE A VALUE WITH RUNNING INSTRUMENT
+fixed piezo 1:  offset of piezo was -1.280Vpp
+                amplitude of modulation was 340mVpp
+                offset of modulation was -30mVpp
+                I DON'T KNOW ZERO POINT OF CURRENT MODULATION, AS IN THE PICTURE I CAN ONLY SEE A VALUE WITH RUNNING INSTRUMENT
+fixed ld: I HAVE NO DATA, PLEASE INSERT IT
+fullspec: amplitude of piezo was 15.1Vpp
+          offset of piezo was -1.6Vpp
+          amplitude of modulation was 180mVpp
+          offset of modulation was 0Vpp
+          relative phase: 187°
+          I DON'T KNOW ZERO POINT OF CURRENT MODULATION, AS IN THE PICTURE I CAN ONLY SEE A VALUE WITH RUNNING INSTRUMENT
