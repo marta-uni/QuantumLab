@@ -4,9 +4,13 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-def crop_to_min_max(time, laser_voltage, piezo_voltage):
+def crop_to_min_max(time, laser_voltage, piezo_voltage, ld_volt=None):
     '''Crops time and voltage readings in order to include just one
-     frequency sweep from the piezo.'''
+     frequency sweep from the piezo.
+     
+     If necessary crops diode modulation data. Crop is perfomed only
+     following piezo data, so if you have to crop data in order to include
+     just one modulation sweep, you need to invert piezo_voltage and ld_volt.'''
 
     if len(piezo_voltage) == 0:
         return None  # Return None if piezo_voltage is empty
@@ -24,8 +28,37 @@ def crop_to_min_max(time, laser_voltage, piezo_voltage):
     time_window = time[start_index:end_index + 1]
     laser_window = laser_voltage[start_index:end_index + 1]
     piezo_window = piezo_voltage[start_index:end_index + 1]
+    
+    if ld_volt is not None:
+        ld_window = ld_volt[start_index:end_index + 1]
+        return time_window, laser_window, piezo_window, ld_window
+    else:
+        return time_window, laser_window, piezo_window
 
-    return time_window, laser_window, piezo_window
+
+def crop_to_min_max_extended(time, laser_voltage, piezo_voltage, ld_volt):
+    '''Crops time and voltage readings in order to include just one
+     frequency sweep from the piezo and from modulation of laser current.'''
+
+    min_index_piezo = np.argmin(piezo_voltage)
+    max_index_piezo = np.argmax(piezo_voltage)
+    min_index_diode = np.argmin(ld_volt)
+    max_index_diode = np.argmax(ld_volt)
+
+    start_index_piezo = min(min_index_piezo, max_index_piezo)
+    end_index_piezo = max(min_index_piezo, max_index_piezo)
+    start_index_diode = min(min_index_diode, max_index_diode)
+    end_index_diode = max(min_index_diode, max_index_diode)
+    
+    start_index = max(start_index_diode, start_index_piezo)
+    end_index = min(end_index_diode, end_index_piezo)
+
+    time_window = time[start_index:end_index + 1]
+    laser_window = laser_voltage[start_index:end_index + 1]
+    piezo_window = piezo_voltage[start_index:end_index + 1]
+    ld_window = ld_volt[start_index:end_index + 1]
+
+    return time_window, laser_window, piezo_window, ld_window
 
 
 def fit_piezo_line(time, piezo_voltage):
