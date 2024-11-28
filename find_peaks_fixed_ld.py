@@ -73,13 +73,17 @@ plt.tight_layout()
 plt.savefig(f'{folder}/figures/finding_peaks/{title}_residuals.pdf')
 plt.show()
 
+freq = [377108945610922.8, 377109126401922.8,
+        377109307192922.8, 377111224766631.8, 377112041422631.8]
+
 # Saving data in clean_data folder
 output_file = f'{folder}/clean_data/{title}_peaks.csv'
 df = pd.DataFrame()
 df['indices'] = peaks_indices
-df['laser_pèaks'] = laser_peaks
-df['piezo_pèaks'] = piezo_peaks
-df['ld_pèaks'] = ld_peaks
+df['laser_peaks'] = laser_peaks
+df['piezo_peaks'] = piezo_peaks
+df['ld_peaks'] = ld_peaks
+df['freq'] = freq
 
 print(df)
 
