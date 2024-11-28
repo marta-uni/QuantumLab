@@ -61,8 +61,8 @@ plt.plot(piezo_restricted, just_peaks, label='Peaks without doppler',
 plt.scatter(x_peaks, y_peaks, label='Peaks',
          color='red', s=20, marker='x')
 plt.xlabel('Volt Piezo [V]')
-plt.ylabel('Volt Laser [V]')
-plt.title('Volt piezo vs Laser intensity')
+plt.ylabel('Laser peaks [V]')
+plt.title('Subtracting fit of doppler envelope from data')
 plt.grid()
 plt.legend()
 plt.show()
