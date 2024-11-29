@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import functions as fn
 import numpy as np
 from matplotlib import cm
-from fit_peaks import lorentzian
+from fit_peaks import lorentzian, lorentzian_off
 
 
 def plot_voltage_vs_time(timestamps, volt_laser, volt_piezo, piezo_fitted, file_name, save=False):
@@ -73,8 +73,8 @@ def plot_piezo_laser_fit(piezo_fitted, volt_laser, file_name, A, x0, gamma, xpea
         plt.close()
     else:
         plt.show()
-        
-        
+
+
 def plot_freq_laser_fit(piezo_fitted, volt_laser, file_name, A, x0, gamma, xpeaks, ypeaks, width, save=False):
     fitted_curves = []
     for A_, x0_, gamma_, peak, w in zip(A, x0, gamma, xpeaks, width):
@@ -94,6 +94,36 @@ def plot_freq_laser_fit(piezo_fitted, volt_laser, file_name, A, x0, gamma, xpeak
     plt.xlabel('Frequency (Hz)')
     plt.ylabel('Laser Intensity (V)')
     plt.title('Frequency vs Laser Voltage')
+    plt.legend()
+    plt.grid()
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    if save:
+        plt.savefig(file_name)
+        plt.close()
+    else:
+        plt.show()
+
+
+def plot_time_laser_fit(time, volt_laser, file_name, A, x0, gamma, off, xpeaks, ypeaks, save=False):
+    fitted_curves = []
+    for A_, x0_, gamma_, off_, peak in zip(A, x0, gamma, off, xpeaks):
+        x = np.linspace(peak - 3 * gamma_, peak +  3 * gamma_, 100)
+        y = lorentzian_off(x, A_, x0_, gamma_, off_)
+        fitted_curves.append((x, y))
+
+    cmap = cm.get_cmap('Oranges')
+    colors = cmap(np.linspace(0.5, 0.9, len(fitted_curves)))
+
+    plt.figure(figsize=(12, 6))
+    plt.plot(time, volt_laser, label='Data',
+             color='green', marker='.', linestyle=None)
+    plt.scatter(xpeaks, ypeaks, marker='x', label='Peak Values')
+    for i, (x, y) in enumerate(fitted_curves):
+        plt.plot(x, y, '--', label=f'Fitted Lorentzian {i+1}', color=colors[i])
+    plt.xlabel('Voltage Piezo (V)')
+    plt.ylabel('Laser Intensity (V)')
+    plt.title('Piezo Voltage vs Laser Voltage')
     plt.legend()
     plt.grid()
     plt.xticks(rotation=45)
