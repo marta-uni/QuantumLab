@@ -32,8 +32,8 @@ const_i_peaks = pd.read_csv(const_i_peaks_filename, skiprows=1, names=['indices'
 spec_peaks = pd.read_csv(spec_peaks_filename, skiprows=1, names=['indices','timestamp','pd_peaks','piezo_peaks','ld_peaks','freq'], dtype={'indices': int, 'pd_peaks': float, 'piezo_peaks': float, 'ld_peaks': float})
 
 #fitting the data and plotting
-const_i_coeff1, const_i_coeff2 = fn.plot_fits(const_i_peaks['ld_peaks'], const_i_peaks['freq'], 'ld_peaks', 'freq', 'Constant diode current, modulated piezo position', "figures/fit_constdiode.pdf", save=True)
-const_piezo_coeff1, const_piezo_coeff2 =fn.plot_fits(const_piezo_peaks['piezo_peaks'], const_piezo_peaks['freq'], 'piezo_peaks', 'freq', 'constant piezo position, modulated diode current', "figures/fit_constpiezo.pdf", save=True)
+const_i_coeff1, const_i_coeff2 = fn.plot_fits(const_i_peaks['piezo_peaks'], const_i_peaks['freq'], 'ld_peaks', 'freq', 'Constant diode current, modulated piezo position', "figures/fit_constdiode.pdf", save=True)
+const_piezo_coeff1, const_piezo_coeff2 =fn.plot_fits(const_piezo_peaks['ld_peaks'], const_piezo_peaks['freq'], 'piezo_peaks', 'freq', 'constant piezo position, modulated diode current', "figures/fit_constpiezo.pdf", save=True)
 
 t_const_i_coeff1, t_const_i_coeff2 = fn.plot_fits(const_i_peaks['timestamp'], const_i_peaks['freq'], 'time', 'freq', 'Fixed Piezo, modulated diode current: time calib', "figures/timefit_constdiode.pdf", save=True)
 t_const_piezo_coeff1, t_const_piezo_coeff2 = fn.plot_fits(const_piezo_peaks['timestamp'], const_piezo_peaks['freq'], 'time', 'freq', 'Fixed diode current, modulated piezo: time calib', "figures/timefit_constpiezo.pdf", save=True)
