@@ -10,6 +10,7 @@ data_file = f'{folder}/clean_data/{title}.csv'
 
 data = pd.read_csv(data_file)
 
+timestamp = data['timestamp'].to_numpy()
 volt_laser = data['volt_laser'].to_numpy()
 volt_piezo = data['volt_piezo'].to_numpy()
 volt_ld = data['volt_ld'].to_numpy()
@@ -41,7 +42,7 @@ plt.ylabel('Volt Laser [V]')
 plt.title(f'Fitting {title}')
 plt.grid()
 plt.legend()
-plt.savefig(f'{folder}/figures/finding_peaks/{title}_fit.pdf')
+# plt.savefig(f'{folder}/figures/finding_peaks/{title}_fit.pdf')
 
 
 just_peaks = volt_laser - doppler_envelope(volt_piezo, *popt)
@@ -53,6 +54,7 @@ indices = [0, 1, 2, 8, 10]
 peaks_indices = peaks_indices[indices]
 
 piezo_peaks = np.array(volt_piezo[peaks_indices])
+timestamp = np.array(timestamp[peaks_indices])
 laser_peaks = np.array(volt_laser[peaks_indices])
 ld_peaks = np.array(volt_ld[peaks_indices])
 y_peaks = np.array(just_peaks[peaks_indices])
@@ -70,7 +72,7 @@ plt.title(f'Rediduals {title}')
 plt.grid()
 plt.legend()
 plt.tight_layout()
-plt.savefig(f'{folder}/figures/finding_peaks/{title}_residuals.pdf')
+# plt.savefig(f'{folder}/figures/finding_peaks/{title}_residuals.pdf')
 plt.show()
 
 freq = [377108945610922.8, 377109126401922.8,
@@ -80,7 +82,8 @@ freq = [377108945610922.8, 377109126401922.8,
 output_file = f'{folder}/clean_data/{title}_peaks.csv'
 df = pd.DataFrame()
 df['indices'] = peaks_indices
-df['laser_peaks'] = laser_peaks
+df['timestamp'] = timestamp
+df['pd_peaks'] = laser_peaks
 df['piezo_peaks'] = piezo_peaks
 df['ld_peaks'] = ld_peaks
 df['freq'] = freq
