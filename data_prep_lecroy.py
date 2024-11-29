@@ -10,13 +10,14 @@ volt_laser, volt_piezo, piezo_fitted.'''
 
 # Define the folder and file paths
 folder_name = 'data9'
-title = 'Fixed_ld00000'
+title = 'fullspec00000'
 df = pd.DataFrame()
 # Import single channel files
 channel_files = [f'{folder_name}/C{i}{title}.csv' for i in range(1, 4)]
 # Define channel names
 column_titles = ['volt_laser', 'volt_piezo', 'volt_ld']
 os.makedirs(f"{folder_name}/clean_data", exist_ok=True)
+print(title)
 
 # Loop through each file in the file_paths
 for i, channel in enumerate(channel_files):
@@ -45,11 +46,11 @@ volt_piezo = df['volt_piezo'].to_numpy()
 volt_ld = df['volt_ld'].to_numpy()
 
 # Cropping data to a single sweep
-timestamps, volt_laser, volt_piezo, volt_ld = fn.crop_to_min_max(
-    timestamps, volt_laser, volt_piezo, volt_ld)
-# If the data is acquired with modulation both on piezo and laser diode current:
-# timestamps, volt_laser, volt_piezo, volt_ld = fn.crop_to_min_max_extended(
+# timestamps, volt_laser, volt_piezo, volt_ld = fn.crop_to_min_max(
 #     timestamps, volt_laser, volt_piezo, volt_ld)
+# If the data is acquired with modulation both on piezo and laser diode current:
+timestamps, volt_laser, volt_piezo, volt_ld = fn.crop_to_min_max_extended(
+    timestamps, volt_laser, volt_piezo, volt_ld)
 
 piezo_fitted = fn.fit_piezo_line(timestamps, volt_piezo)
 ld_fitted = fn.fit_piezo_line(timestamps, volt_ld)
@@ -78,5 +79,5 @@ df['volt_laser'] = volt_laser
 df['volt_piezo'] = piezo_fitted
 df['volt_ld'] = ld_fitted
 
-df.to_csv(output_file, index=False)
-print(f"Data saved to {output_file}")
+'''df.to_csv(output_file, index=False)
+print(f"Data saved to {output_file}")'''

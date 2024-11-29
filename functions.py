@@ -72,6 +72,10 @@ def fit_piezo_line(time, piezo_voltage):
     # Fit a line (degree 1 polynomial) to the piezo voltage data
     slope, intercept = np.polyfit(time, piezo_voltage, 1)
     piezo_fit = slope * time + intercept
+    
+    print('Fitting a*x+b:')
+    print(f'slope = {slope} V/s\t intercept = {intercept} V')
+    
 
     return piezo_fit
 
