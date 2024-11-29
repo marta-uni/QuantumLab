@@ -8,61 +8,59 @@ Rb = [377104390084020.94, 377104798412020.94, 377105206740020.94, 37710590987848
 Rb_labels = ['21', 'cross', '22', '32', 'cross', '33', '22', 'cross', '23', '11', 'cross', '12']
 
 #load data
-f_diode_filename = "data/Fixed_ld00000.csv"
-f_diode_data = pd.read_csv(f_diode_filename, skiprows=1, names=['timestamp', 'photodiode', 'volt_piezo', 'volt_ld'], dtype={'timestamp': float, 'photodiode': float, 'volt_piezo': float, 'volt_ld': float})
+const_piezo_filename = "data/Fixed_ld00000.csv"
+const_i_filename = "data/Fixed_piezo00000.csv"
+spec_filename = 'data/fullspec00000.csv'
 
-f_piezo_filename = "data/Fixed_piezo00000.csv"
-f_piezo_data = pd.read_csv(f_piezo_filename, skiprows=1, names=['timestamp', 'photodiode', 'volt_piezo', 'volt_ld'], dtype={'timestamp': float, 'photodiode': float, 'volt_piezo': float, 'volt_ld': float})
-
-f_piezo2_filename = "data/Fixed_piezo00001.csv"
-f_piezo2_data = pd.read_csv(f_piezo2_filename, skiprows=1, names=['timestamp', 'photodiode', 'volt_piezo', 'volt_ld'], dtype={'timestamp': float, 'photodiode': float, 'volt_piezo': float, 'volt_ld': float})
-
-f_spec_filename = 'data/fullspec00000.csv'
-f_spec_data = pd.read_csv(f_spec_filename, skiprows=1, names=['timestamp', 'photodiode', 'volt_piezo', 'volt_ld'], dtype={'timestamp': float, 'photodiode': float, 'volt_piezo': float, 'volt_ld': float})
+const_piezo_data = pd.read_csv(const_piezo_filename, skiprows=1, names=['timestamp', 'photodiode', 'volt_piezo', 'volt_ld'], dtype={'timestamp': float, 'photodiode': float, 'volt_piezo': float, 'volt_ld': float})
+const_i_data = pd.read_csv(const_i_filename, skiprows=1, names=['timestamp', 'photodiode', 'volt_piezo', 'volt_ld'], dtype={'timestamp': float, 'photodiode': float, 'volt_piezo': float, 'volt_ld': float})
+spec_data = pd.read_csv(spec_filename, skiprows=1, names=['timestamp', 'photodiode', 'volt_piezo', 'volt_ld'], dtype={'timestamp': float, 'photodiode': float, 'volt_piezo': float, 'volt_ld': float})
 
 #plotting
 
-fn.plotting3(f_piezo_data['timestamp'], f_piezo_data['photodiode'], f_piezo_data['volt_piezo']/10, f_piezo_data['volt_ld'], 'time', 'pd', 'piezo/10', 'ld', 'modulated diode current, fixed piezo', 'figures/time_fixed_piezo.pdf', save = True)
-fn.plotting3(f_piezo2_data['timestamp'], f_piezo2_data['photodiode'], f_piezo2_data['volt_piezo']/10, f_piezo2_data['volt_ld'], 'time', 'pd', 'piezo/10', 'ld', 'modulated diode current, fixed piezo', 'figures/time_fixed_piezo2.pdf', save = True)
-fn.plotting3(f_diode_data['timestamp'], f_diode_data['photodiode'], f_diode_data['volt_piezo']/10, f_diode_data['volt_ld'], 'time', 'pd', 'piezo/10', 'ld', 'modulated piezo current, fixed diode', 'figures/time_fixed_diode.pdf', save = True)
-fn.plotting3(f_spec_data['timestamp'], f_spec_data['photodiode'], f_spec_data['volt_piezo']/10, f_spec_data['volt_ld'], 'time', 'pd', 'piezo/10', 'ld', 'spectroscopy', 'figures/time_spec.pdf', save = True)
+fn.plotting3(const_i_data['timestamp'], const_i_data['photodiode'], const_i_data['volt_piezo']/10, const_i_data['volt_ld'], 'time', 'pd', 'piezo/10', 'ld', 'modulated diode current, fixed piezo', 'figures/time_constdiode.pdf', save = True)
+fn.plotting3(const_piezo_data['timestamp'], const_piezo_data['photodiode'], const_piezo_data['volt_piezo']/10, const_piezo_data['volt_ld'], 'time', 'pd', 'piezo/10', 'ld', 'modulated piezo current, fixed diode', 'figures/time_constpiezo.pdf', save = True)
+fn.plotting3(spec_data['timestamp'], spec_data['photodiode'], spec_data['volt_piezo']/10, spec_data['volt_ld'], 'time', 'pd', 'piezo/10', 'ld', 'spectroscopy', 'figures/time_spec.pdf', save = True)
 
 #load peaks
-f_diode_peaks_filename = "data/Fixed_ld00000_peaks (1).csv"
-f_piezo_peaks_filename = "data/Fixed_piezo00000_peaks (1).csv"
-f_piezo2_peaks_filename = "data/Fixed_piezo00001_peaks.csv"
-f_spec_peaks_filename = 'data/fullspec00000_peaks (1).csv'
+const_piezo_peaks_filename = "data/Fixed_ld00000_peaks (1).csv"
+const_i_peaks_filename = "data/Fixed_piezo00000_peaks (1).csv"
+spec_peaks_filename = 'data/fullspec00000_peaks (1).csv'
 
-f_diode_peaks = pd.read_csv(f_diode_peaks_filename, skiprows=1, names=['indices', 'timestamp','pd_peaks','piezo_peaks','ld_peaks','freq'], dtype={'indices': int, 'pd_peaks': float, 'piezo_peaks': float, 'ld_peaks': float})
-f_piezo_peaks = pd.read_csv(f_piezo_peaks_filename, skiprows=1, names=['indices','timestamp', 'pd_peaks','piezo_peaks','ld_peaks','freq'], dtype={'indices': int, 'pd_peaks': float, 'piezo_peaks': float, 'ld_peaks': float})
-f_piezo2_peaks = pd.read_csv(f_piezo2_peaks_filename, skiprows=1, names=['indices', 'timestamp', 'pd_peaks','piezo_peaks','ld_peaks','freq'], dtype={'indices': int, 'pd_peaks': float, 'piezo_peaks': float, 'ld_peaks': float})
-f_spec_peaks = pd.read_csv(f_spec_peaks_filename, skiprows=1, names=['indices','timestamp','pd_peaks','piezo_peaks','ld_peaks','freq'], dtype={'indices': int, 'pd_peaks': float, 'piezo_peaks': float, 'ld_peaks': float})
-
+const_piezo_peaks = pd.read_csv(const_piezo_peaks_filename, skiprows=1, names=['indices', 'timestamp','pd_peaks','piezo_peaks','ld_peaks','freq'], dtype={'indices': int, 'pd_peaks': float, 'piezo_peaks': float, 'ld_peaks': float})
+const_i_peaks = pd.read_csv(const_i_peaks_filename, skiprows=1, names=['indices','timestamp', 'pd_peaks','piezo_peaks','ld_peaks','freq'], dtype={'indices': int, 'pd_peaks': float, 'piezo_peaks': float, 'ld_peaks': float})
+spec_peaks = pd.read_csv(spec_peaks_filename, skiprows=1, names=['indices','timestamp','pd_peaks','piezo_peaks','ld_peaks','freq'], dtype={'indices': int, 'pd_peaks': float, 'piezo_peaks': float, 'ld_peaks': float})
 
 #fitting the data and plotting
-f_piezo_coeff1, f_piezo_coeff2 = fn.plot_fits(f_piezo_peaks['ld_peaks'], f_piezo_peaks['freq'], 'ld_peaks', 'freq', 'Fixed Piezo, modulated diode current', "figures/fit_fixedpiezo.pdf", save=True)
-f_piezo2_coeff1, f_piezo2_coeff2 =fn.plot_fits(f_piezo2_peaks['ld_peaks'], f_piezo2_peaks['freq'], 'ld_peaks', 'freq', 'Fixed Piezo, modulated diode current', "figures/fit_fixedpiezo2.pdf", save=True)
-f_diode_coeff1, f_diode_coeff2 =fn.plot_fits(f_diode_peaks['piezo_peaks'], f_diode_peaks['freq'], 'piezo_peaks', 'freq', 'Fixed diode current, modulated piezo', "figures/fit_fixeddiode.pdf", save=True)
+const_i_coeff1, const_i_coeff2 = fn.plot_fits(const_i_peaks['ld_peaks'], const_i_peaks['freq'], 'ld_peaks', 'freq', 'Fixed Piezo, modulated diode current', "figures/fit_constdiode.pdf", save=True)
+const_piezo_coeff1, const_piezo_coeff2 =fn.plot_fits(const_piezo_peaks['piezo_peaks'], const_piezo_peaks['freq'], 'piezo_peaks', 'freq', 'Fixed diode current, modulated piezo', "figures/fit_constpiezo.pdf", save=True)
 
-f_piezo_coeff1, f_piezo_coeff2 = fn.plot_fits(f_piezo_peaks['timestamp'], f_piezo_peaks['freq'], 'time', 'freq', 'Fixed Piezo, modulated diode current: time calib', "figures/timefit_fixedpiezo.pdf", save=True)
-f_diode_coeff1, f_diode_coeff2 =fn.plot_fits(f_diode_peaks['timestamp'], f_diode_peaks['freq'], 'time', 'freq', 'Fixed diode current, modulated piezo: time calib', "figures/timefit_fixeddiode.pdf", save=True)
-f_spec_coeff1, f_spec_coeff2 =fn.plot_fits(f_spec_peaks['timestamp'], f_spec_peaks['freq'], 'time', 'freq', 'Full transitions spectroscopy: time calib', "figures/timefit_spec.pdf", save=True)
-
+t_const_i_coeff1, t_const_i_coeff2 = fn.plot_fits(const_i_peaks['timestamp'], const_i_peaks['freq'], 'time', 'freq', 'Fixed Piezo, modulated diode current: time calib', "figures/timefit_constdiode.pdf", save=True)
+t_const_piezo_coeff1, t_const_piezo_coeff2 =fn.plot_fits(const_piezo_peaks['timestamp'], const_piezo_peaks['freq'], 'time', 'freq', 'Fixed diode current, modulated piezo: time calib', "figures/timefit_constpiezo.pdf", save=True)
+t_spec_coeff1, t_spec_coeff2 =fn.plot_fits(spec_peaks['timestamp'], spec_peaks['freq'], 'time', 'freq', 'Full transitions spectroscopy: time calib', "figures/timefit_spec.pdf", save=True)
 
 #frequency conversion
-f_piezo_freq = f_piezo_coeff2[0] * f_piezo_data['volt_ld']**2 + f_piezo_coeff2[1] * f_piezo_data['volt_ld'] + f_piezo_coeff2[2]
-f_diode_freq = f_diode_coeff2[0] * f_diode_data['volt_piezo']**2 + f_diode_coeff2[1] * f_diode_data['volt_piezo'] + f_diode_coeff2[2]
+
+#quadratic:
+#const_i_freq = const_i_coeff2[0] * const_i_data['volt_ld']**2 + const_i_coeff2[1] * const_i_data['volt_ld'] + const_i_coeff2[2]
+#const_piezo_freq = const_piezo_coeff2[0] * const_piezo_data['volt_piezo']**2 + const_piezo_coeff2[1] * const_piezo_data['volt_piezo'] + const_piezo_coeff2[2]
+#spec_freq = t_spec_coeff2[0] * spec_data['timestamp']**2+ t_spec_coeff2[1]* spec_data['timestamp'] + t_spec_coeff2[2] 
+
+#linear:
+const_i_freq = const_i_coeff1[0] * const_i_data['volt_ld'] + const_i_coeff1[1]
+const_piezo_freq = const_piezo_coeff1[0] * const_piezo_data['volt_piezo']+ const_piezo_coeff1[1]
+spec_freq = t_spec_coeff1[0] * spec_data['timestamp']+ t_spec_coeff1[1]
 
 #plot data vs frequencies
-fn.plotting(f_piezo_freq, f_piezo_data['photodiode'],'calibrated frequency', 'signal at photodiode', 'spectroscopy of Rb, \n modulated diode current, fixed piezo position', r"figures/spec_fixedpiezo.pdf", save=True)
-fn.plotting(f_diode_freq, f_diode_data['photodiode'], 'calibrated frequency', 'signal at photodiode', 'spectroscopy of Rb, \n fixed diode current, modulated piezo position', r"figures/spec_fixeddiode.pdf", save=True)
-#fn.plotting(f_diode_freq, f_diode_data['timestamp'], 'calibrated frequency', 'signal at photodiode', 'spectroscopy of Rb, \n fixed diode current, modulated piezo position', r"figures/fixeddiode_spec.pdf", save=True)
+fn.plotting(const_i_freq, const_i_data['photodiode'],'calibrated frequency', 'signal at photodiode', 'spectroscopy of Rb, \n modulated diode current, fixed piezo position', "figures/spec_constdiode.pdf", save=True)
+fn.plotting(const_piezo_freq, const_piezo_data['photodiode'], 'calibrated frequency', 'signal at photodiode', 'spectroscopy of Rb, \n fixed diode current, modulated piezo position', "figures/spec_constpiezo.pdf", save=True)
+fn.plotting(spec_freq, spec_data['photodiode'], 'calibrated frequency', 'spec', 'everything modulated', "figures/spec_total_spec.pdf", save=True)
 
 
-dv_dt_spec = f_spec_coeff1[0]
-dv_di = f_piezo_coeff1[0]
+dv_dt_spec = t_spec_coeff1[0]
+dv_di = const_i_coeff1[0]
 di_dt = -9.000777862062634
-dv_dp = f_diode_coeff1[0]
+dv_dp = const_piezo_coeff1[0]
 dp_dt = 268.55520938050694
 
 print ('dv/di', dv_di )
