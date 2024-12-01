@@ -281,6 +281,23 @@ def plotting(x, y, x_label, y_label, title, file_name, save):
     else:
         plt.show()
 
+
+def scattering(x, y, x_label, y_label, title, file_name, save):
+    plt.figure(figsize=(12, 6))
+    plt.scatter(x, y, label='Data', color='green')
+    plt.title(title)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.legend()
+    plt.xticks(rotation=45)
+    plt.grid()
+    plt.tight_layout()
+    if save:
+        plt.savefig(file_name)
+        plt.close()
+    else:
+        plt.show()
+
 def plotting3(x, y1, y2, y3, x_label, y1_label, y2_label, y3_label, title, file_name, save):
     plt.figure(figsize=(12, 6))
     plt.plot(x, y1, label=y1_label, color='green')
@@ -297,3 +314,34 @@ def plotting3(x, y1, y2, y3, x_label, y1_label, y2_label, y3_label, title, file_
         plt.close()
     else:
         plt.show()
+
+
+def remove_singlepeak_data(data, beginning_time, end_time):
+    '''
+    Removes data and corresponding frequencies within the specified time window [beginning_time, end_time].
+    '''
+    # Create a mask for values outside the [beginning_time, end_time] interval
+    mask = (data['timestamp'] < beginning_time) | (data['timestamp'] > end_time)
+    
+    # Apply the mask to filter the data and frequencies
+    cropped_data = data[mask]
+    
+    return cropped_data
+
+
+def remove_peaks(peaks_mean, peaks_gamma, data, gamma_factor):
+    '''
+    Removes regions around peaks in peaks_mean from "data" and "frequencies",
+    where the region is defined by gamma_factor * gamma around each peak.
+    '''
+
+    # Make copies of the original data and frequencies
+    new_data = data.copy()
+
+    # Loop through peaks and remove regions
+    for mean, gamma in zip(peaks_mean, peaks_gamma):
+        begin_time = mean - gamma_factor * gamma
+        end_time = mean + gamma_factor * gamma
+        new_data = remove_singlepeak_data(new_data, begin_time, end_time)
+
+    return new_data
