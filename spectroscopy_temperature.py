@@ -55,10 +55,12 @@ frequencies = dv_dt * data['timestamp'] + coeff1_time[1]
 frequencies = np.array(frequencies)
 fn.plotting(frequencies, data['photodiode'],'calibrated frequency', 'signal at photodiode', 'spectroscopy of Rb, \n constant diode current, modulated piezo position', "figures_temperature/spec_constdiode.pdf", save=True)
 
-#double check frequencies same length as data and then add frequencies to data pandas array
+#double check frequencies same length as data and then add frequencies to data pandas array. saves to csv
 if len(data) != len(frequencies):
     raise ValueError("Data and frequencies must have the same length.")
 data['frequencies']= frequencies
+data.to_csv('data/Fixed_ld00000_frequencies.csv', index=False)
+
 
 #remove 2 * gamma_factor * gamma interval around peaks, plot and generate file with new data
 
@@ -68,5 +70,6 @@ cropped_data = fn.remove_peaks(peaks_mean, peaks_gamma, data, gamma_factor)
 fn.scattering(cropped_data['timestamp'], cropped_data['photodiode'],'timestamp', 'signal at photodiode', 'spectroscopy of Rb, \n constant diode current, modulated piezo position', "figures_temperature/spec_cropped_time.pdf", save=True)
 fn.scattering(cropped_data['frequencies'], cropped_data['photodiode'],'frequencies', 'signal at photodiode', 'spectroscopy of Rb, \n constant diode current, modulated piezo position', "figures_temperature/spec_cropped_freq.pdf", save=True)
 
-cropped_data.to_csv('data/Fixed_ld00000_cropped_frequencies.csv', index=False)
+cropped_data.to_csv('data/Fixed_ld00000_frequencies_cropped.csv', index=False)
+
 
