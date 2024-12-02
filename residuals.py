@@ -14,8 +14,6 @@ title = 'Fixed_ld00000'
 data = pd.read_csv(f'{folder_name}/clean_data/{title}.csv')
 peaks = pd.read_csv(f'{folder_name}/clean_data/{title}_peaks.csv')
 
-print(data)
-
 # Producing single numpy arrays for manipulation with functions
 timestamps = data['timestamp'].to_numpy()
 volt_laser = data['volt_laser'].to_numpy()
@@ -68,8 +66,16 @@ def transmission(x, trans1, scale1, mean1, sigma1, trans2, scale2, mean2, sigma2
 p0 = [1, 0.5, time_peaks[0], 2.5e-3, 1, 0.5, time_peaks[2], 2.5e-3,
       1, 0.2, time_peaks[3], 2.5e-3, 1, 0.5, time_peaks[4], 2.5e-3]
 
-param_bounds = ([-np.inf, -np.inf, -np.inf, -0.015, 0, -np.inf, 0.0005, 0, -np.inf, 0.006, 0],
-                [0, np.inf, 0, -0.008, np.inf, 0, 0.005, np.inf, 0, 1.27, np.inf])
+# not using these
+'''lower_bounds = [0, 0, -0.01468, 0,  # first transition
+                0, 0, -0.01170, 0,  # second transition
+                0, 0, 0.002279, 0,  # third transition
+                0, 0, 0.007642, 0]  # fourth transition
+
+upper_bounds = [np.inf, np.inf, -0.01271, np.inf,  # first transition
+                np.inf, np.inf, -0.01017, np.inf,  # second transition
+                np.inf, np.inf, 0.003253, np.inf,  # third transition
+                np.inf, np.inf, 0.008765, np.inf]  # fourth transition'''
 
 popt, pcov = curve_fit(transmission, xdata=timestamps,
                        ydata=remove_offset, p0=p0, maxfev=10000)
