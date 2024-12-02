@@ -63,7 +63,9 @@ fn.plotting(frequencies, data['photodiode'], 'calibrated frequency', 'signal at 
 if len(data) != len(frequencies):
     raise ValueError("Data and frequencies must have the same length.")
 data['frequencies'] = frequencies
-data.to_csv('data9/clean_data/Fixed_ld00000_frequencies.csv', index=False)
+print(df_dt)
+print(coeff1_time[1])
+# data.to_csv('data9/clean_data/Fixed_ld00000_frequencies.csv', index=False)
 
 
 # remove 2 * gamma_factor * gamma interval around peaks, plot and generate file with new data
@@ -76,4 +78,4 @@ fn.scattering(cropped_data['timestamp'], cropped_data['photodiode'], 'timestamp'
 fn.scattering(cropped_data['frequencies'], cropped_data['photodiode'], 'frequencies', 'signal at photodiode',
               'spectroscopy of Rb, \n constant diode current, modulated piezo position', "data9/figures/temperature/spec_cropped_freq.pdf", save=False)
 
-cropped_data.to_csv('data9/clean_data/Fixed_ld00000_frequencies_cropped.csv', index=False)
+# cropped_data.to_csv('data9/clean_data/Fixed_ld00000_frequencies_cropped.csv', index=False)
