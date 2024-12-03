@@ -153,4 +153,4 @@ peaks.to_csv(output_file, index=False)
 print(f"Data saved to {output_file}")
 
 data['offset'] = remove_offset
-data.to_csv(f'data9/clean_data/{title}_peaks_fit_offset.csv', index=False)
+data.to_csv(f'data9/clean_data/{title}_offset.csv', index=False)
