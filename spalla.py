@@ -5,17 +5,17 @@ from scipy.optimize import curve_fit
 
 
 def transmission_no_off(x, trans, scale, sigma):
-    return (trans * np.exp(-scale * np.exp(-((x - peaks['freq'][4])**2) / (2 * sigma**2))))
+    return (trans * (np.exp(-scale * np.exp(-((x - peaks['freq'][4])**2) / (2 * sigma**2))))-1)
 
 def transmission(x, slope, intercept, trans, scale, sigma):
     return ((slope * x + intercept)*(trans * np.exp(-scale * np.exp(-((x - peaks['freq'][4])**2) / (2 * sigma**2)))))
 
 
 
-data = pd.read_csv('data9/clean_data/Fixed_ld00000_frequencies_cropped.csv')
+data = pd.read_csv('data9/clean_data/Fixed_ld00000_frequencies_cropped_2.csv')
 
 frequencies = data['frequencies'].to_numpy()
-photodiode = data['photodiode'].to_numpy()
+photodiode = data['offset'].to_numpy()
 
 peaks = pd.read_csv('data9/clean_data/Fixed_ld00000_peaks_fit.csv')
 
@@ -38,7 +38,7 @@ lower_bounds = [0, 0, 0]
 
 upper_bounds = [4, 1, 1e9]
 
-mask = (frequencies >= peaks['freq'][4])
+mask = (frequencies >= peaks['freq'][4]) & (frequencies <= 3e9 + 3.7711e14)
 restricted_freq_peak = frequencies[mask]
 restricted_pd_peak = photodiode[mask]
 
@@ -62,11 +62,15 @@ plt.grid()
 plt.legend()
 plt.tight_layout()
 
+temp_estimate = rb_mass[-1]/kb*(popt[2]*c/peaks['freq'][4])**2
+
+print(f'temperature = {temp_estimate}')
+
 '''cutting before peak'''
 
 print('\ncutting before peak')
 
-mask = (frequencies >= 11.7e9 + 3.771e14)
+mask = (frequencies >= 11.7e9 + 3.771e14) & (frequencies <= 3e9 + 3.7711e14)
 restricted_freq_1 = frequencies[mask]
 restricted_pd_1 = photodiode[mask]
 
@@ -77,6 +81,10 @@ print(f'fit params:\n{popt}')
 
 f = np.linspace(min(restricted_freq_1), max(restricted_freq_1), 500)
 pd_fit = transmission_no_off(f, *popt)
+
+temp_estimate = rb_mass[-1]/kb*(popt[2]*c/peaks['freq'][4])**2
+
+print(f'temperature = {temp_estimate}')
 
 plt.figure()
 plt.scatter(restricted_freq_1, restricted_pd_1, label='Data',
@@ -89,9 +97,9 @@ plt.title('Photodiode readings fit, cutting before peak')
 plt.grid()
 plt.legend()
 plt.tight_layout()
+plt.show()
 
-
-'''including slope'''
+'''
 
 print('\nincluding slope, cutting at peak')
 
@@ -125,7 +133,6 @@ plt.grid()
 plt.legend()
 plt.tight_layout()
 
-'''including slope'''
 
 print('\nincluding slope, cutting before peak')
 
@@ -148,4 +155,4 @@ plt.title('Photodiode readings fit, including slope')
 plt.grid()
 plt.legend()
 plt.tight_layout()
-plt.show()
+plt.show()'''
