@@ -191,22 +191,20 @@ data0.to_csv(f'data8/clean_data/{titles[0]}_offset.csv', index=False)
 '''second part: finding peaks for everything else'''
 
 
-def doppler_rough_simple(x, slope, intercept, scale1, mean1, sigma1, scale2, mean2, sigma2):
-    return (slope * x + intercept + scale1 * np.exp(-((x - mean1)**2) / (2 * sigma1**2))
-            + scale2 * np.exp(-((x - mean2)**2) / (2 * sigma2**2)))
-
-
 def transmission_simple(x, trans, scale1, scale2, mean1, mean2, sigma):
     return trans * np.exp(- scale1 * np.exp(-((x - mean1)**2) / (2 * sigma**2))
-                                                  - scale2 * np.exp(-((x - mean2)**2) / (2 * sigma**2)))
-    
+                          - scale2 * np.exp(-((x - mean2)**2) / (2 * sigma**2)))
 
 
 titles.pop(0)
 data_list = [pd.read_csv(
     f'{folder_name}/clean_data/{title}_cropped.csv') for title in titles]
+heights = [0.002, 0.002, 0.002, 0.002, 0.0015,
+           0.0015, 0.0015, 0.0007, 0.0007, 0.001, 0.00057]
 
-for title, data in zip(titles, data_list):
+freq = [377111224766631.8, 377111633094631.8, 377112041422631.8]
+
+for title, data, height in zip(titles, data_list, heights):
     # Producing single numpy arrays for manipulation with functions
     volt_laser = data['volt_laser'].to_numpy()
     volt_piezo = data['piezo_fitted'].to_numpy()
@@ -242,12 +240,18 @@ for title, data in zip(titles, data_list):
     plt.tight_layout()
     plt.savefig(f'data8/figures/fit_peaks/rough_fit_{title}.pdf')
     plt.close()
-    
+
     residuals = volt_laser - transmission_simple(volt_piezo, *popt)
-    lor, cov = fp.fit_peaks_spectroscopy(
-        x=volt_piezo, y=residuals, height=0.0015, distance=100)
-    
-    peaks_indices, _ = find_peaks(residuals, height=0.0015, distance=100)
+
+    if (title == 'scope_11'):
+        lor, cov = fp.fit_peaks_spectroscopy(
+            x=volt_piezo, y=residuals, height=height, distance=400)
+        peaks_indices, _ = find_peaks(residuals, height=height, distance=400, prominence=(0.00055, 0.002))
+    else:
+        lor, cov = fp.fit_peaks_spectroscopy(
+            x=volt_piezo, y=residuals, height=height, distance=100)
+        peaks_indices, _ = find_peaks(residuals, height=height, distance=100)
+
     piezo_peaks = np.array(volt_piezo[peaks_indices])
     time_peaks = np.array(timestamp[peaks_indices])
     laser_peaks = np.array(volt_laser[peaks_indices])
@@ -263,15 +267,15 @@ for title, data in zip(titles, data_list):
     dgamma = []
     doff = []
 
-    for popt_rough, pcov_rough in zip(lor, cov):
-        A_list.append(popt_rough[0])
-        x0_list.append(popt_rough[1])
-        gamma_list.append(popt_rough[2])
-        off_list.append(popt_rough[3])
-        dA.append(np.sqrt(pcov_rough[0, 0]))
-        dx0.append(np.sqrt(pcov_rough[1, 1]))
-        dgamma.append(np.sqrt(pcov_rough[2, 2]))
-        doff.append(np.sqrt(pcov_rough[3, 3]))
+    for popt, pcov in zip(lor, cov):
+        A_list.append(popt[0])
+        x0_list.append(popt[1])
+        gamma_list.append(popt[2])
+        off_list.append(popt[3])
+        dA.append(np.sqrt(pcov[0, 0]))
+        dx0.append(np.sqrt(pcov[1, 1]))
+        dgamma.append(np.sqrt(pcov[2, 2]))
+        doff.append(np.sqrt(pcov[3, 3]))
 
     x0_list = np.array(x0_list)
     A_list = np.array(A_list)
@@ -283,4 +287,26 @@ for title, data in zip(titles, data_list):
     doff = np.array(doff)
 
     pf.plot_time_laser_fit(volt_piezo, residuals, f'data8/figures/fit_peaks/residuals_{title}.pdf',
-                        A_list, x0_list, gamma_list, off_list, piezo_peaks, residuals_peaks, save=True)
+                           A_list, x0_list, gamma_list, off_list, piezo_peaks, residuals_peaks, save=True)
+    
+    if (title == 'scope_11'):
+        continue
+
+    output_file = f'data8/clean_data/{title}_peaks_fit.csv'
+    df = pd.DataFrame()
+    df['indices'] = peaks_indices
+    df['timestamp'] = time_peaks
+    df['phtodiode'] = laser_peaks
+    df['piezo_peaks'] = piezo_peaks
+    df['freq'] = freq
+    df['lor_A'] = A_list
+    df['lor_mean'] = x0_list
+    df['lor_gamma'] = gamma_list
+    df['lor_off'] = off_list
+    df['lor_d_A'] = dA
+    df['lor_d_mean'] = dx0
+    df['lor_d_gamma'] = dgamma
+    df['lor_d_off'] = doff
+
+    df.to_csv(output_file, index=False)
+    print(f"Data saved to {output_file}")
