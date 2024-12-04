@@ -116,8 +116,8 @@ def plot_time_laser_fit(time, volt_laser, file_name, A, x0, gamma, off, xpeaks, 
     colors = cmap(np.linspace(0.5, 0.9, len(fitted_curves)))
 
     plt.figure(figsize=(12, 6))
-    plt.plot(time, volt_laser, label='Data',
-             color='green', marker='.', linestyle=None)
+    plt.scatter(time, volt_laser, label='Data',
+             color='green', marker='.')
     plt.scatter(xpeaks, ypeaks, marker='x', label='Peak Values')
     for i, (x, y) in enumerate(fitted_curves):
         plt.plot(x, y, '--', label=f'Fitted Lorentzian {i+1}', color=colors[i])
