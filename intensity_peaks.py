@@ -25,6 +25,9 @@ def transmission(x, trans1, scale1, mean1, sigma1, trans2, scale2, mean2, sigma2
 # Define the folder and file paths
 folder_name = 'data8'
 titles = [f'scope_{i}' for i in range(0, 12)]
+
+'''first part: only scope 0'''
+
 data0 = pd.read_csv(f'{folder_name}/clean_data/{titles[0]}_cropped.csv')
 
 # Producing single numpy arrays for manipulation with functions
@@ -185,3 +188,99 @@ print(f"Data saved to {output_file}")
 data0['offset'] = remove_offset
 data0.to_csv(f'data8/clean_data/{titles[0]}_offset.csv', index=False)
 
+'''second part: finding peaks for everything else'''
+
+
+def doppler_rough_simple(x, slope, intercept, scale1, mean1, sigma1, scale2, mean2, sigma2):
+    return (slope * x + intercept + scale1 * np.exp(-((x - mean1)**2) / (2 * sigma1**2))
+            + scale2 * np.exp(-((x - mean2)**2) / (2 * sigma2**2)))
+
+
+def transmission_simple(x, trans, scale1, scale2, mean1, mean2, sigma):
+    return trans * np.exp(- scale1 * np.exp(-((x - mean1)**2) / (2 * sigma**2))
+                                                  - scale2 * np.exp(-((x - mean2)**2) / (2 * sigma**2)))
+    
+
+
+titles.pop(0)
+data_list = [pd.read_csv(
+    f'{folder_name}/clean_data/{title}_cropped.csv') for title in titles]
+
+for title, data in zip(titles, data_list):
+    # Producing single numpy arrays for manipulation with functions
+    volt_laser = data['volt_laser'].to_numpy()
+    volt_piezo = data['piezo_fitted'].to_numpy()
+    timestamp = data['timestamp'].to_numpy()
+
+    mask = (volt_piezo >= 1.8)
+    volt_piezo = volt_piezo[mask]
+    volt_laser = volt_laser[mask]
+    timestamp = timestamp[mask]
+
+    lower_bounds = [0, 0, 0, 2.7, 4, 0]
+    upper_bounds = [np.inf, np.inf, np.inf, 3.6, 5, np.inf]
+
+    popt, pcov = curve_fit(transmission_simple, volt_piezo, volt_laser, bounds=(
+        lower_bounds, upper_bounds), maxfev=10000)
+
+    print(f'{title} params: {popt}')
+
+    vp = np.linspace(min(volt_piezo), max(volt_piezo), 500)
+    fit = transmission_simple(vp, *popt)
+    line = popt[0] * vp + popt[1]
+
+    plt.figure()
+    plt.scatter(volt_piezo, volt_laser, label='Laser intensity',
+                color='blue', s=5, marker='.')
+    plt.plot(vp, fit, label='fit',
+             color='red', linewidth=2, marker='')
+    plt.xlabel('Volt piezo [V]')
+    plt.ylabel('Volt Laser [V]')
+    plt.title(f'Rough fit for {title}')
+    plt.grid()
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(f'data8/figures/fit_peaks/rough_fit_{title}.pdf')
+    plt.close()
+    
+    residuals = volt_laser - transmission_simple(volt_piezo, *popt)
+    lor, cov = fp.fit_peaks_spectroscopy(
+        x=volt_piezo, y=residuals, height=0.0015, distance=100)
+    
+    peaks_indices, _ = find_peaks(residuals, height=0.0015, distance=100)
+    piezo_peaks = np.array(volt_piezo[peaks_indices])
+    time_peaks = np.array(timestamp[peaks_indices])
+    laser_peaks = np.array(volt_laser[peaks_indices])
+
+    residuals_peaks = residuals[peaks_indices]
+
+    x0_list = []
+    A_list = []
+    gamma_list = []
+    off_list = []
+    dx0 = []
+    dA = []
+    dgamma = []
+    doff = []
+
+    for popt_rough, pcov_rough in zip(lor, cov):
+        A_list.append(popt_rough[0])
+        x0_list.append(popt_rough[1])
+        gamma_list.append(popt_rough[2])
+        off_list.append(popt_rough[3])
+        dA.append(np.sqrt(pcov_rough[0, 0]))
+        dx0.append(np.sqrt(pcov_rough[1, 1]))
+        dgamma.append(np.sqrt(pcov_rough[2, 2]))
+        doff.append(np.sqrt(pcov_rough[3, 3]))
+
+    x0_list = np.array(x0_list)
+    A_list = np.array(A_list)
+    gamma_list = np.array(gamma_list)
+    off_list = np.array(off_list)
+    dx0 = np.array(dx0)
+    dA = np.array(dA)
+    dgamma = np.array(dgamma)
+    doff = np.array(doff)
+
+    pf.plot_time_laser_fit(volt_piezo, residuals, f'data8/figures/fit_peaks/residuals_{title}.pdf',
+                        A_list, x0_list, gamma_list, off_list, piezo_peaks, residuals_peaks, save=True)
