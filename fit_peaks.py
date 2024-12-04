@@ -76,7 +76,8 @@ def fit_peaks_spectroscopy(x, y, height, distance):
     covs = []
     for peak, width in zip(peaks, widths_full):
         # Determine a fitting range around the peak, i.e. width/2
-        fit_range = min(width/2, 0.001/x_spacing)
+        # fit_range = min(width/2, 0.001/x_spacing) # use this for data9
+        fit_range = width/2
         start = max(0, peak - int(fit_range))
         end = min(len(x), peak + int(fit_range))
 
@@ -86,7 +87,8 @@ def fit_peaks_spectroscopy(x, y, height, distance):
         width_scaled = 2 * fit_range * x_spacing
 
         # Initial guess: A=height at peak, x0=peak position in x_fitted, gamma=half-width at half-maximum
-        initial_guess = [y[peak], x[peak], 0.0001, -0.01]
+        # initial_guess = [y[peak], x[peak], 0.0001, -0.01] # use this for data9
+        initial_guess = [y[peak], x[peak], 0.001, 0]
 
         # Define bounds for A, x0, and gamma
         bounds = (
