@@ -45,6 +45,7 @@ for i in range(0, 1000):
 
     popt, pcov = curve_fit(partial_fit, xdata=restricted_freq,
                            ydata=restricted_pd, bounds=(lower_bounds, upper_bounds), maxfev=10000)
+    print('Fixing scale1')
     print(f'{popt[2]}\t{np.sqrt(pcov[2,2])}')
     print(f'{popt[1]}\t{np.sqrt(pcov[1,1])}\n')
     temp.append(popt[2])
@@ -53,9 +54,9 @@ for i in range(0, 1000):
     def partial_fit_2(x, a, s, t):
         return transmission_temp_no_off(x=x, ampl=a, scale1=s, scale2=popt[1], temp=t)
 
-    p0 = popt
     popt, pcov = curve_fit(partial_fit_2, xdata=restricted_freq,
                            ydata=restricted_pd, bounds=(lower_bounds, upper_bounds), maxfev=10000)
+    print('Fixing scale2')
     print(f'{popt[2]}\t{np.sqrt(pcov[2,2])}')
     print(f'{popt[1]}\t{np.sqrt(pcov[1,1])}\n')
     temp.append(popt[2])
