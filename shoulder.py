@@ -30,8 +30,8 @@ peaks = pd.read_csv('data9/clean_data/Fixed_ld00000_peaks_fit.csv')
 frequencies = data['frequencies'].to_numpy()
 photodiode = data['offset'].to_numpy()
 
-lower_mask = 5e8 + + 3.7711e14
-# lower_mask = peaks['freq'][4]
+# lower_mask = 5e8 + + 3.7711e14
+lower_mask = peaks['freq'][4]
 upper_mask = 3e9 + 3.7711e14
 
 mask = (frequencies >= lower_mask) & (frequencies <= upper_mask)
@@ -55,7 +55,7 @@ pd_fit = transmission_temp_no_off(f, *popt)
 plt.figure()
 plt.scatter(restricted_freq, restricted_pd, label='Data',
             color='blue', s=5, marker='.')
-plt.plot(f, pd_fit, label='Fit result',
+plt.plot(f, pd_fit, label=f'Fit result, T$={popt[3]:.1f}\pm{np.sqrt(pcov[3,3]):.1f}$K',
          color='red', linewidth=2)
 plt.xlabel('Frequencies [Hz]')
 plt.ylabel('Photodiode readings [V]')
@@ -63,7 +63,7 @@ plt.title('Photodiode readings fit, cutting at peak')
 plt.grid()
 plt.legend()
 plt.tight_layout()
-plt.savefig('data9/figures/temperature/shoulder_fit_full.pdf')
+plt.savefig('data9/figures/temperature/temp_fit_shoulder.pdf')
 
 
 print('\nTry scaling')
@@ -103,7 +103,6 @@ plt.plot(f, pd_fit, label='Fit result',
          color='red', linewidth=2)
 plt.xlabel('Frequencies [Hz]')
 plt.ylabel('Photodiode readings [V]')
-plt.title('Photodiode readings fit, cutting at peak, scaling')
 plt.grid()
 plt.legend()
 plt.tight_layout()
