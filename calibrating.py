@@ -4,6 +4,13 @@ import functions as fn
 import pandas as pd
 
 '''
+
+this code takes in files scope_{i}_cropped.csv and scope_{i}_peaks_fit.csv, calibrates, generates scope{i}_frequencies.csv with a new column with the calibrated frequencies
+
+'''
+
+
+'''
 #load Rb transitions
 Rb = [377104390084020.94, 377104798412020.94, 377105206740020.94, 377105909878483.7, 377106090669483.7, 377106271460483.7, 377108945610922.8, 377109126401922.8, 377109307192922.8, 377111224766631.8, 377111633094631.8, 377112041422631.8]
 Rb_labels = ['21', 'cross', '22', '32', 'cross', '33', '22', 'cross', '23', '11', 'cross', '12']
