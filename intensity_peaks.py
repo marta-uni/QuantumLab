@@ -170,7 +170,7 @@ output_file = f'data8/clean_data/{titles[0]}_peaks_fit.csv'
 df = pd.DataFrame()
 df['indices'] = peaks_indices
 df['timestamp'] = time_peaks
-df['phtodiode'] = laser_peaks
+df['photodiode'] = laser_peaks
 df['piezo_peaks'] = piezo_peaks
 df['freq'] = freq
 df['lor_A'] = A_list
@@ -296,7 +296,7 @@ for title, data, height in zip(titles, data_list, heights):
     df = pd.DataFrame()
     df['indices'] = peaks_indices
     df['timestamp'] = time_peaks
-    df['phtodiode'] = laser_peaks
+    df['photodiode'] = laser_peaks
     df['piezo_peaks'] = piezo_peaks
     df['freq'] = freq
     df['lor_A'] = A_list
