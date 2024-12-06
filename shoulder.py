@@ -30,8 +30,11 @@ peaks = pd.read_csv('data9/clean_data/Fixed_ld00000_peaks_fit.csv')
 frequencies = data['frequencies'].to_numpy()
 photodiode = data['offset'].to_numpy()
 
-# mask = (frequencies >= 5e8 + + 3.7711e14) & (frequencies <= 3e9 + 3.7711e14)
-mask = (frequencies >= peaks['freq'][4]) & (frequencies <= 3e9 + 3.7711e14)
+lower_mask = 5e8 + + 3.7711e14
+# lower_mask = peaks['freq'][4]
+upper_mask = 3e9 + 3.7711e14
+
+mask = (frequencies >= lower_mask) & (frequencies <= upper_mask)
 restricted_freq = frequencies[mask]
 restricted_pd = photodiode[mask]
 
@@ -60,7 +63,7 @@ plt.title('Photodiode readings fit, cutting at peak')
 plt.grid()
 plt.legend()
 plt.tight_layout()
-plt.savefig('data9/figures/shoulder_fit.pdf')
+plt.savefig('data9/figures/temperature/shoulder_fit_full.pdf')
 
 
 print('\nTry scaling')
@@ -76,16 +79,15 @@ x_min = scaler.data_min_
 
 peaks['scaled_freq'] = (peaks['freq'] - x_min) / scale_factor
 
-mask = (scaled_frequencies >= peaks['scaled_freq'][4]) & (
-    scaled_frequencies <= ((3e9 + 3.7711e14 - x_min) / scale_factor))
+mask = (scaled_frequencies >= ((lower_mask - x_min) / scale_factor)) & (
+    scaled_frequencies <= ((upper_mask - x_min) / scale_factor))
 restricted_freq_scaled = scaled_frequencies[mask]
-restricted_pd_scaled = photodiode[mask]
 
 lower_bounds = [0, 0, 0, 273]
 upper_bounds = [np.inf, np.inf, np.inf, 500]
 
 popt, pcov = curve_fit(transmission_temp_no_off_scaled, xdata=restricted_freq_scaled,
-                       ydata=restricted_pd_scaled, bounds=(lower_bounds, upper_bounds), maxfev=10000)
+                       ydata=restricted_pd, bounds=(lower_bounds, upper_bounds), maxfev=10000)
 
 print(f'amplitude:\t{popt[0]} +/- {np.sqrt(pcov[0,0])} V')
 print(f'scale1:\t\t{popt[1]} +/- {np.sqrt(pcov[1,1])} m^3')
