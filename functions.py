@@ -345,3 +345,7 @@ def remove_peaks(peaks_mean, peaks_gamma, data, gamma_factor):
         new_data = remove_singlepeak_data(new_data, begin_time, end_time)
 
     return new_data
+
+def calibrate(x, coeffs1):
+    new_x = coeffs1[0] * x + coeffs1[1]
+    return new_x
