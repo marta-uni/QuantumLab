@@ -14,18 +14,8 @@ def transmission(x, slope, intercept, scale1, scale2, scale3, mean1, mean2, mean
 
 
 folder = 'data10'
-title = 'intensity00000'
+title = 'intensity00008'
 data_file = f'{folder}/clean_data/{title}.csv'
-
-lower_bounds = [-np.inf, -np.inf,
-                0, 0, 0,
-                4, 7, 8.2,
-                0, 0, 0]
-
-upper_bounds = [0, np.inf,
-                np.inf, np.inf, np.inf,
-                4.8, 7.8, 9,
-                np.inf, np.inf, np.inf]
 
 data = pd.read_csv(data_file)
 
@@ -34,8 +24,25 @@ volt_laser = data['volt_laser'].to_numpy()
 volt_piezo = data['volt_piezo'].to_numpy()
 volt_ld = data['volt_ld'].to_numpy()
 
+lower_bounds = [-np.inf, -np.inf,
+                0, 0, 0,
+                4, 7, 8.4,
+                0, 0, 0]
+
+upper_bounds = [0, np.inf,
+                np.inf, np.inf, np.inf,
+                5, 8, 9.4,
+                np.inf, np.inf, np.inf]
+
+p0 = [-29e-3, 1,
+      0.62, 0.09, 0.23,
+      4.7, 7.7, 8.9,
+      1, 1, 1]
+
 popt, pcov = curve_fit(transmission, volt_piezo,
-                       volt_laser, bounds=(lower_bounds, upper_bounds), maxfev=10000)
+                       volt_laser, p0=p0, bounds=(lower_bounds, upper_bounds), maxfev=10000)
+
+print(popt)
 
 vp = np.linspace(min(volt_piezo), max(volt_piezo), 500)
 fit = transmission(vp, *popt)
@@ -55,17 +62,15 @@ plt.close()
 
 
 residuals = volt_laser - transmission(volt_piezo, *popt)
-peaks_indices, _ = find_peaks(residuals, height=0.0035, distance=2000)
+peaks_indices, _ = find_peaks(residuals, height=0.016, distance=2000)
 lor, cov = fp.fit_peaks_spectroscopy(
-    volt_piezo, residuals, height=0.0035, distance=2000)
+    volt_piezo, residuals, height=0.016, distance=2000)
 
 # Correct peaks
 peaks_indices = np.delete(peaks_indices, [3, 4])
 
-lor.pop(4)
 lor.pop(3)
 
-cov.pop(4)
 cov.pop(3)
 
 piezo_peaks = np.array(volt_piezo[peaks_indices])
@@ -110,7 +115,6 @@ pf.plot_time_laser_fit(volt_piezo, residuals, f'{folder}/figures/find_peaks/resi
 freq = [377108945610922.8, 377109126401922.8, 377109307192922.8,
         377111224766631.8, 377111633094631.8, 377112041422631.8]
 
-'''
 # Saving data in clean_data folder
 output_file = f'{folder}/clean_data/{title}_peaks.csv'
 df = pd.DataFrame()
@@ -131,4 +135,3 @@ df['lor_d_off'] = doff
 
 df.to_csv(output_file, index=False)
 print(f"Data saved to {output_file}")
-'''
