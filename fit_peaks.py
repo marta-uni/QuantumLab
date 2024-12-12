@@ -77,7 +77,7 @@ def fit_peaks_spectroscopy(x, y, height, distance):
     for peak, width in zip(peaks, widths_full):
         # Determine a fitting range around the peak, i.e. width/2
         # fit_range = min(width/2, 0.001/x_spacing) # use this for data9
-        fit_range = min(width/2, 0.05/x_spacing) # use this for data10
+        fit_range = min(width/2, 0.07/x_spacing) # use this for data10
         # fit_range = width/2
         start = max(0, peak - int(fit_range))
         end = min(len(x), peak + int(fit_range))
@@ -88,16 +88,16 @@ def fit_peaks_spectroscopy(x, y, height, distance):
         width_scaled = 2 * fit_range * x_spacing
 
         # Initial guess: A=height at peak, x0=peak position in x_fitted, gamma=half-width at half-maximum
-        initial_guess = [y[peak], x[peak], 0.0001, -0.01] # use this for data9
-        initial_guess = [y[peak], x[peak], 0.05, 0] # use this for data10
+        # initial_guess = [y[peak], x[peak], 0.0001, -0.01] # use this for data9
+        initial_guess = [y[peak], x[peak], 0.02, 0] # use this for data10
         # initial_guess = [y[peak], x[peak], 0.001, 0]
 
         # Define bounds for A, x0, and gamma
         bounds = (
             # Lower bounds for [A, x0, gamma, off]
-            [0, x[peak] - width_scaled/4, 0, -np.inf],
+            [0, x[peak] - width_scaled, 0, -np.inf],
             # Upper bounds for [A, x0, gamma, off]
-            [np.inf, x[peak] + width_scaled/4, width_scaled, np.inf]
+            [np.inf, x[peak] + width_scaled, width_scaled, np.inf]
         )
 
         try:

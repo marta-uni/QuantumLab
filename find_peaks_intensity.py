@@ -61,8 +61,10 @@ lor, cov = fp.fit_peaks_spectroscopy(
 
 # Correct peaks
 peaks_indices = np.delete(peaks_indices, [3, 4])
+
 lor.pop(4)
 lor.pop(3)
+
 cov.pop(4)
 cov.pop(3)
 
@@ -102,13 +104,13 @@ doff = np.array(doff)
 
 print(x0_list)
 
-pf.plot_time_laser_fit(volt_piezo, residuals, f'{folder}/figures/find_peaks/residuals_{title}.pdf',
-                       A_list, x0_list, gamma_list, off_list, piezo_peaks, y_peaks, save=False)
+pf.plot_time_laser_fit(volt_piezo, residuals, f'{folder}/figures/find_peaks/residuals_{title}.png',
+                       A_list, x0_list, gamma_list, off_list, piezo_peaks, y_peaks, save=True)
 
 freq = [377108945610922.8, 377109126401922.8, 377109307192922.8,
         377111224766631.8, 377111633094631.8, 377112041422631.8]
 
-
+'''
 # Saving data in clean_data folder
 output_file = f'{folder}/clean_data/{title}_peaks.csv'
 df = pd.DataFrame()
@@ -129,3 +131,4 @@ df['lor_d_off'] = doff
 
 df.to_csv(output_file, index=False)
 print(f"Data saved to {output_file}")
+'''
