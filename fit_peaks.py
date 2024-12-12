@@ -77,7 +77,8 @@ def fit_peaks_spectroscopy(x, y, height, distance):
     for peak, width in zip(peaks, widths_full):
         # Determine a fitting range around the peak, i.e. width/2
         # fit_range = min(width/2, 0.001/x_spacing) # use this for data9
-        fit_range = width/2
+        fit_range = min(width/2, 0.05/x_spacing) # use this for data10
+        # fit_range = width/2
         start = max(0, peak - int(fit_range))
         end = min(len(x), peak + int(fit_range))
 
@@ -87,8 +88,9 @@ def fit_peaks_spectroscopy(x, y, height, distance):
         width_scaled = 2 * fit_range * x_spacing
 
         # Initial guess: A=height at peak, x0=peak position in x_fitted, gamma=half-width at half-maximum
-        # initial_guess = [y[peak], x[peak], 0.0001, -0.01] # use this for data9
-        initial_guess = [y[peak], x[peak], 0.001, 0]
+        initial_guess = [y[peak], x[peak], 0.0001, -0.01] # use this for data9
+        initial_guess = [y[peak], x[peak], 0.05, 0] # use this for data10
+        # initial_guess = [y[peak], x[peak], 0.001, 0]
 
         # Define bounds for A, x0, and gamma
         bounds = (
@@ -105,9 +107,9 @@ def fit_peaks_spectroscopy(x, y, height, distance):
             covs.append(pcov)
         except RuntimeError as e:
             print(
-                f"Failed to fit peak at timestamp = {x[peak]:.4f} due to RuntimeError: {e}")
+                f"Failed to fit peak at voltage = {x[peak]:.4f} due to RuntimeError: {e}")
         except Exception as e:
             print(
-                f"An unexpected error occurred while fitting peak at timestamp = {x[peak]:.4f}: {e}")
+                f"An unexpected error occurred while fitting peak at voltage = {x[peak]:.4f}: {e}")
 
     return params, covs
