@@ -14,7 +14,7 @@ def transmission(x, slope, intercept, scale1, scale2, scale3, mean1, mean2, mean
 
 
 folder = 'data10'
-title = 'intensity00008'
+title = 'intensity00010'
 data_file = f'{folder}/clean_data/{title}.csv'
 
 data = pd.read_csv(data_file)
@@ -26,17 +26,17 @@ volt_ld = data['volt_ld'].to_numpy()
 
 lower_bounds = [-np.inf, -np.inf,
                 0, 0, 0,
-                4, 7, 8.4,
+                4.5, 7.5, 8.6,
                 0, 0, 0]
 
 upper_bounds = [0, np.inf,
                 np.inf, np.inf, np.inf,
-                5, 8, 9.4,
+                5.5, 8.5, 9.6,
                 np.inf, np.inf, np.inf]
 
-p0 = [-29e-3, 1,
-      0.62, 0.09, 0.23,
-      4.7, 7.7, 8.9,
+p0 = [-0.029, 1,
+      0.63, 0.08, 0.25,
+      5, 7.9, 9.1,
       1, 1, 1]
 
 popt, pcov = curve_fit(transmission, volt_piezo,
@@ -62,16 +62,20 @@ plt.close()
 
 
 residuals = volt_laser - transmission(volt_piezo, *popt)
-peaks_indices, _ = find_peaks(residuals, height=0.016, distance=2000)
+peaks_indices, _ = find_peaks(residuals, height=0.01, distance=2000)
 lor, cov = fp.fit_peaks_spectroscopy(
-    volt_piezo, residuals, height=0.016, distance=2000)
+    volt_piezo, residuals, height=0.01, distance=2000)
 
 # Correct peaks
-peaks_indices = np.delete(peaks_indices, [3, 4])
+peaks_indices = np.delete(peaks_indices, [0, 4, 5, 6, 10])
 
-lor.pop(3)
+lor.pop(8)
+lor.pop(4)
+lor.pop(0)
 
-cov.pop(3)
+cov.pop(8)
+cov.pop(4)
+cov.pop(0)
 
 piezo_peaks = np.array(volt_piezo[peaks_indices])
 timestamp = np.array(timestamp[peaks_indices])
