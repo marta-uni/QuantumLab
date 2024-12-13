@@ -72,6 +72,10 @@ def fit_piezo_line(time, piezo_voltage):
     # Fit a line (degree 1 polynomial) to the piezo voltage data
     slope, intercept = np.polyfit(time, piezo_voltage, 1)
     piezo_fit = slope * time + intercept
+    
+    print('Fitting a*x+b:')
+    print(f'slope = {slope} V/s\t intercept = {intercept} V')
+    
 
     return piezo_fit
 
@@ -231,3 +235,117 @@ def lin_quad_fits(x, y):
     # Calculate corresponding y values for the fitted curve
     quad_fit = quadratic_fit(x_fit)
     return coeffs_1, coeffs_2, x_fit, lin_fit, quad_fit
+    
+def plot_fits(x, y, x_label, y_label, title, file_name, save):
+    coeffs_1, coeffs_2, x_fit, lin_fit, quad_fit = lin_quad_fits(x, y)
+
+    # Format the coefficients for display
+    lin_coeff_label = f"Linear Fit: y = ({coeffs_1[0]:.2e})x + ({coeffs_1[1]:.2e})"
+    quad_coeff_label = (
+        f"Quadratic Fit: y = ({coeffs_2[0]:.2e})x² + ({coeffs_2[1]:.2e})x + ({coeffs_2[2]:.2e})"
+    )
+
+    plt.figure(figsize=(12, 6))
+    plt.scatter(x, y, label='Data', color='green', marker='x', s=30)
+    plt.plot(x_fit, lin_fit, label=lin_coeff_label,
+             color='blue', linestyle='--')  # Plot the linear fit
+    plt.plot(x_fit, quad_fit, label=quad_coeff_label, color='red',
+             linestyle='--')  # Plot the quadratic fit
+    plt.title(title)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.legend()
+    plt.xticks(rotation=45)
+    plt.grid()
+    plt.tight_layout()
+    if save:
+        plt.savefig(file_name)
+        plt.close()
+    else:
+        plt.show()
+    return coeffs_1, coeffs_2
+        
+def plotting(x, y, x_label, y_label, title, file_name, save):
+    plt.figure(figsize=(12, 6))
+    plt.plot(x, y, label='Data', color='green')
+    plt.title(title)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.legend()
+    plt.xticks(rotation=45)
+    plt.grid()
+    plt.tight_layout()
+    if save:
+        plt.savefig(file_name)
+        plt.close()
+    else:
+        plt.show()
+
+
+def scattering(x, y, x_label, y_label, title, file_name, save):
+    plt.figure(figsize=(12, 6))
+    plt.scatter(x, y, label='Data', color='green')
+    plt.title(title)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.legend()
+    plt.xticks(rotation=45)
+    plt.grid()
+    plt.tight_layout()
+    if save:
+        plt.savefig(file_name)
+        plt.close()
+    else:
+        plt.show()
+
+def plotting3(x, y1, y2, y3, x_label, y1_label, y2_label, y3_label, title, file_name, save):
+    plt.figure(figsize=(12, 6))
+    plt.plot(x, y1, label=y1_label, color='green')
+    plt.plot(x, y2, label=y2_label, color='blue')
+    plt.plot(x, y3, label=y3_label, color='red')
+    plt.title(title)
+    plt.xlabel(x_label)
+    plt.legend()
+    plt.xticks(rotation=45)
+    plt.grid()
+    plt.tight_layout()
+    if save:
+        plt.savefig(file_name)
+        plt.close()
+    else:
+        plt.show()
+
+
+def remove_singlepeak_data(data, beginning_time, end_time):
+    '''
+    Removes data and corresponding frequencies within the specified time window [beginning_time, end_time].
+    '''
+    # Create a mask for values outside the [beginning_time, end_time] interval
+    mask = (data['timestamp'] < beginning_time) | (data['timestamp'] > end_time)
+    
+    # Apply the mask to filter the data and frequencies
+    cropped_data = data[mask]
+    
+    return cropped_data
+
+
+def remove_peaks(peaks_mean, peaks_gamma, data, gamma_factor):
+    '''
+    Removes regions around peaks in peaks_mean from "data" and "frequencies",
+    where the region is defined by gamma_factor * gamma around each peak.
+    '''
+
+    # Make copies of the original data and frequencies
+    new_data = data.copy()
+
+    # Loop through peaks and remove regions
+    for mean, gamma in zip(peaks_mean, peaks_gamma):
+        begin_time = mean - gamma_factor * gamma
+        end_time = mean + gamma_factor * gamma
+        new_data = remove_singlepeak_data(new_data, begin_time, end_time)
+
+    return new_data
+
+def calibrate(x, coeffs1):
+    new_x = coeffs1[0] * x + coeffs1[1]
+    return new_x

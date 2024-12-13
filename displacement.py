@@ -45,13 +45,7 @@ for i in range(15, 26):
     file_path = folder_name + "/" + file_name + "_calib.csv"
     print(file_name)
 
-    data = pd.read_csv(
-        file_path,
-        skiprows=2,
-        names=["freq_confoc", "freq_non_confoc", "volt_laser"],
-        dtype={"freq_confoc": float,
-               "freq_non_confoc": float, "volt_laser": float},
-    )
+    data = pd.read_csv(file_path)
 
     freq_confoc = data["freq_confoc"].to_numpy()
     freq_non_confoc = data["freq_non_confoc"].to_numpy()
